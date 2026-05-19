@@ -76,9 +76,10 @@ jobs:
 
       - name: Terraform Destroy
         run: |
+          # OPENAI_API_KEY is passed so Terraform can evaluate the ECS task definition during destroy.
           terraform destroy \
             -var="aws_region=${AWS_REGION}" \
-            -var="google_api_key=${{ secrets.GOOGLE_API_KEY }}" \
+            -var="openai_api_key=${{ secrets.OPENAI_API_KEY }}" \
             -auto-approve
           echo "✅ All infrastructure destroyed."
 

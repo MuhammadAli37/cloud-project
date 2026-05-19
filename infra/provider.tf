@@ -1,3 +1,7 @@
+# =========================
+# TERRAFORM PROVIDER SECTION
+# =========================
+# Defines the AWS provider and remote state backend used by Terraform.
 terraform {
   required_version = "~> 1.9"
 

@@ -1,0 +1,352 @@
+{
+  "1aefd800fe2f8ce4": {
+    "student_id": null,
+    "started_at": "2026-05-16T20:44:37.320669",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Dean of CS department?",
+        "timestamp": "2026-05-16T20:45:47.159354",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The Dean of the Faculty of Information Technology, which includes the Department of Computer Science, is Prof. Dr. Sheikh Muhammad Munaf.",
+        "timestamp": "2026-05-16T20:45:48.740534",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "who is miss sidra nasir",
+        "timestamp": "2026-05-16T20:46:08.696562",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Ms. Sidra Nasir is a lecturer at Salim Habib University, currently on study leave.",
+        "timestamp": "2026-05-16T20:46:10.208575",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "a6590e5fedc5960b": {
+    "student_id": null,
+    "started_at": "2026-05-16T22:50:41.581225",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Show my schedule",
+        "timestamp": "2026-05-16T22:51:14.716626",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "To help you with your schedule, could you please specify your program and semester? For example, are you in the Software Engineering (SE) Semester 3 or Computer Science (CS) Semester 3? This will help me provide the most accurate information.",
+        "timestamp": "2026-05-16T22:51:16.475812",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "semester 6",
+        "timestamp": "2026-05-16T22:53:57.843379",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "For Computer Science (CS) Semester 6 at Salim Habib University, here is your schedule:\n\n- **Compiler Construction**: Razia Qamar (Lec Hall 207)\n- **Software Engineering**: Muhammad Umer Mehmood (Lec Hall 201)\n- **Entrepreneurship**: Ms. Saman (Lec Hall 205)\n- **Cloud Computing**: Gul Raeez Gulshan (Lec Hall 210 - Lab)\n- **Machine Learning**: Dr. Rizwan Qureshi (Lec Hall 201)\n- **DevOps**: Razia Qamar (Lec Hall 310 - Lab)\n- **Computer Networks**: Dr. Sheeraz Arif (Lec Hall 212)\n- **Computer Networks Lab**: Junaid (Computing Lab 3)\n\nIf you need further assistance or details about any specific course, feel free to ask!",
+        "timestamp": "2026-05-16T22:54:01.197416",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "who is miss sidra nasir",
+        "timestamp": "2026-05-16T22:55:12.048404",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Ms. Sidra Nasir is a lecturer at Salim Habib University. However, she is currently on study leave.",
+        "timestamp": "2026-05-16T22:55:13.904970",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "e8c6aa4a601194de": {
+    "student_id": null,
+    "started_at": "2026-05-16T22:59:59.655717",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "7ffc4c7fe0a30a58": {
+    "student_id": null,
+    "started_at": "2026-05-17T10:17:37.205848",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "a65340c7bf02026f": {
+    "student_id": null,
+    "started_at": "2026-05-17T10:18:57.707107",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "83b27c76e4ba6c7f": {
+    "student_id": null,
+    "started_at": "2026-05-17T10:39:07.990696",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "475e8272b04b3226": {
+    "student_id": null,
+    "started_at": "2026-05-17T10:47:39.575962",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "cf9ab7c1905c4cd3": {
+    "student_id": null,
+    "started_at": "2026-05-17T11:05:09.462171",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "972c0196b02fce53": {
+    "student_id": null,
+    "started_at": "2026-05-17T11:06:14.022090",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Dean of CS department?",
+        "timestamp": "2026-05-17T11:08:27.219445",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The Dean of the Faculty of Information Technology, which includes the Department of Computer Science, is Prof. Dr. Sheikh Muhammad Munaf.",
+        "timestamp": "2026-05-17T11:08:28.581134",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "miss sidra nasir who is she",
+        "timestamp": "2026-05-17T11:08:51.745329",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Ms. Sidra Nasir is a lecturer at Salim Habib University. She is currently on study leave.",
+        "timestamp": "2026-05-17T11:08:52.920107",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "de61af2aa29eb086": {
+    "student_id": null,
+    "started_at": "2026-05-17T13:11:15.432451",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "e5287141ded57036": {
+    "student_id": null,
+    "started_at": "2026-05-18T19:31:27.254225",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "caf42274d23156e5": {
+    "student_id": null,
+    "started_at": "2026-05-19T12:05:52.483785",
+    "messages": [
+      {
+        "role": "user",
+        "content": "tell me about associate programs offered in shu",
+        "timestamp": "2026-05-19T12:07:05.610968",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Salim Habib University (SHU) offers several Associate Degree Programs designed to provide students with foundational knowledge and skills in various fields. Here are the associate programs available at SHU:\n\n1. **Associate Degree in Software Engineering (ADP-SE)**: This program focuses on equipping students with essential software engineering skills, preparing them for careers in the tech industry.\n\n2. **Associate Degree in Computer Science (ADP-CS)**: This program offers a curriculum that incorporates the latest technological advancements and research, aligning with international best practices to prepare students for the rapidly changing tech industry.\n\n3. **Associate Degree in AI, Digital Arts & Creative Design**: This program combines artificial intelligence with digital arts and creative design, offering students a unique blend of technical and creative skills.\n\n4. **Associate Degree in Sports & Fitness**: This program is tailored for those interested in pursuing careers in sports and fitness, providing knowledge and skills relevant to the industry.\n\n5. **Associate Degree in Content Creation for Digital Media**: This program focuses on developing skills for creating engaging digital content, preparing students for careers in digital media and marketing.\n\n6. **Associate Degree in Agritech**: This program is designed for students interested in the intersection of agriculture and technology, providing insights into modern agricultural practices.\n\n7. **Associate Degree in Digital Marketing**: This program equips students with the skills needed to excel in the digital marketing landscape, focusing on strategies and tools for effective online marketing.\n\n8. **Associate Degree in Freelancing & Digital Entrepreneurship**: This program prepares students for the gig economy, focusing on skills needed for freelancing and starting digital businesses.\n\n9. **Associate Degree in Food Science & Technology**: This program provides foundational knowledge in food science, preparing students for careers in the food industry.\n\nThese programs are designed to provide practical and theoretical knowledge, preparing students for various professional paths or further education.",
+        "timestamp": "2026-05-19T12:07:11.611354",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "give me info about fee structure of each associate program",
+        "timestamp": "2026-05-19T12:08:26.711199",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Salim Habib University offers several Associate Degree Programs, each with its own fee structure. Here is the fee information for some of the associate programs:\n\n1. **Associate Degree in Computer Science**: \n   - Tuition Fee: PKR 6,765 per credit hour\n\n2. **Associate Degree in Software Engineering**: \n   - Tuition Fee: PKR 6,765 per credit hour\n\n3. **Associate Degree in AI Digital Arts & Creative Design**: \n   - Tuition Fee: PKR 6,765 per credit hour\n\n4. **Associate Degree in Content Creation for Digital Media**: \n   - Tuition Fee: PKR 6,765 per credit hour\n\n5. **Associate Degree in TV & Film Production**: \n   - Tuition Fee: PKR 6,765 per credit hour\n\n6. **Associate Degree in Sports & Fitness**: \n   - Tuition Fee: PKR 6,765 per credit hour\n\nPlease note that these fees are per credit hour, and the total cost will depend on the number of credit hours you enroll in each semester. Additionally, there may be other charges such as admission fees, exam fees, and lab fees. For the most accurate and detailed fee structure, it's best to contact the university's admissions office directly.",
+        "timestamp": "2026-05-19T12:08:33.374553",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "how many credit hours consists in each associate program",
+        "timestamp": "2026-05-19T12:09:51.470995",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The credit hours for each Associate Degree Program at Salim Habib University vary. Here are the details for some of the programs:\n\n1. **Associate Degree in Sports & Fitness**: This program consists of a total of 66 credit hours.\n\n2. **Associate Degree in Biocomputing and Artificial Intelligence**: The program has a total of 60 credit hours.\n\nIf you need information about other specific associate programs, please let me know!",
+        "timestamp": "2026-05-19T12:09:54.832645",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "new admission dsates",
+        "timestamp": "2026-05-19T12:17:18.897202",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "I'm sorry, but the specific admission dates for Salim Habib University are not provided in the available context. I recommend visiting the university's official admissions page at [https://admissions.shu.edu.pk](https://admissions.shu.edu.pk) or contacting the admissions office directly at admissions@shu.edu.pk for the most accurate and up-to-date information.",
+        "timestamp": "2026-05-19T12:17:21.156140",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "new admission open or closed",
+        "timestamp": "2026-05-19T12:18:52.944114",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Admissions for Fall 2026 at Salim Habib University are currently open. If you're interested in applying, you can visit the university's admissions page for more details and to start your application process: [https://admissions.shu.edu.pk](https://admissions.shu.edu.pk). If you have any further questions, feel free to ask!",
+        "timestamp": "2026-05-19T12:18:59.715551",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "registration id of Muhammad Ali",
+        "timestamp": "2026-05-19T12:19:40.313781",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "I'm sorry, but I couldn't find the registration ID for Muhammad Ali in the provided context. If you have any other questions or need further assistance, feel free to ask!",
+        "timestamp": "2026-05-19T12:19:42.179468",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "Funding Agencies",
+        "timestamp": "2026-05-19T12:20:33.499253",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Salim Habib University collaborates with various funding agencies to support research and development. Here are some of the funding agencies associated with SHU:\n\n**National Funding Sources:**\n- Higher Education Commission (HEC)\n- Grand Challenge Fund (GCF)\n- Rapid Technology Transfer Grant (RTTG)\n- Local Challenge Fund (LCF)\n- Technology Transfer Support Fund (TTSF)\n- Technology Development Fund (TDF)\n- Pakistan Science Foundation (PSF)\n- Pakistan Agricultural Research Board (PARB)\n- Pakistan Agricultural Research Council (PARC)\n- Pakistan Engineering Council (PEC)\n- Pakistan Academy of Sciences (PAS)\n- ICT \u2013 R&D Fund, Ministry of Science and Technology (MoST)\n- Population Association of Pakistan (PAP)\n\n**International Funding Sources:**\n- United States Agency for International Development\n- World Bank Group (World Bank)\n- World Intellectual Property Organization (WIPO)\n- Food and Agricultural Organization (FAO)\n- International Fund for Agricultural Development\n- Asian Development Bank (ADB)\n- International Atomic Energy Agency (IAEA)\n- Global Environment Facility (GEF)\n- International Development Research Centre (IDRC)\n- Islamic Development Bank (IDB)\n\nThese agencies provide various grants and funding opportunities to support research initiatives at SHU.",
+        "timestamp": "2026-05-19T12:20:35.973642",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "any scholarships available ",
+        "timestamp": "2026-05-19T12:21:48.519729",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Salim Habib University offers several scholarships and financial aid options for students. Here are some of the available scholarships:\n\n1. **Merit Scholarship**: Up to 50% fee waiver based on Intermediate/Matric marks.\n2. **Need-Based Financial Aid**: Income-based assistance, which requires applying via the Financial Aid Form.\n3. **HEC Need-Based Scholarship Program (NBSP)**: Covers full tuition and provides a living allowance.\n4. **Ehsaas Scholarship**: Managed by the Higher Education Commission (HEC).\n5. **Sports Scholarship**: Available for university-level athletes.\n6. **Sibling Discount**: A 25% tuition fee discount if a sibling is currently enrolled at SHU.\n\nAdditionally, for existing students, scholarships are awarded based on their Semester Grade Point Average (SGPA):\n\n- **Dr. Salim Habib Scholarship**: 100% of tuition fee for students with an SGPA of 3.8 and above.\n- **Dr. Iram Afaq Scholarship**: 50% of tuition fee for students with an SGPA of 3.5 and above.\n\nIf you need more detailed information or have specific questions, feel free to ask!",
+        "timestamp": "2026-05-19T12:21:51.781679",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "for 2 gpa",
+        "timestamp": "2026-05-19T12:22:37.508403",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "At Salim Habib University, a CGPA of 2.0 is the minimum passing requirement. However, for scholarships, typically a higher GPA is needed. For instance, the Dr. Salim Habib Scholarship requires a semester GPA of 3.7 or above for a 100% tuition fee waiver, and the Dr. Iram Afaq Scholarship offers a 50% tuition fee waiver. Unfortunately, there are no scholarships available for students with a CGPA of 2.0. If you need more information or have other questions, feel free to ask!",
+        "timestamp": "2026-05-19T12:22:40.680013",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "one year sports diploma program, its fee structure and credit hour",
+        "timestamp": "2026-05-19T12:25:35.200555",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The one-year Diploma in Sports & Fitness at Salim Habib University is designed to provide students with a comprehensive understanding of sports management, fitness training, and health promotion. This program combines theoretical coursework with practical experience to prepare students for careers in fitness centers, sports organizations, and wellness programs.\n\n**Fee Structure:**\n- Tuition Fee for the 1st Semester: PKR 8,000 per credit hour\n- Tuition for subsequent semesters: Minimum 23 credit hours at PKR 8,000 per credit hour\n- Additional charges may include a Student Activity Fund, Lab Fee, and a refundable Security Deposit.\n\n**Credit Hours:**\n- The program consists of 30 credit hours.\n\nIf you need more specific details or have further questions, feel free to ask!",
+        "timestamp": "2026-05-19T12:25:37.504116",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "classes weekend or week days \\/",
+        "timestamp": "2026-05-19T12:28:22.983247",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The one-year Diploma in Sports & Fitness at Salim Habib University typically offers classes on weekdays. However, specific scheduling details such as exact days and times can vary each semester. For the most accurate and up-to-date information, it's best to contact the university's administration or check the current semester timetable. If you have any more questions or need further assistance, feel free to ask!",
+        "timestamp": "2026-05-19T12:28:25.903643",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "be63730903df93f9": {
+    "student_id": null,
+    "started_at": "2026-05-19T13:06:59.504817",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Dean of CS department?",
+        "timestamp": "2026-05-19T13:07:22.801592",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The Dean of the Faculty of Information Technology, which includes the Department of Computer Science, is Prof. Dr. Sheikh Muhammad Munaf.",
+        "timestamp": "2026-05-19T13:07:25.329500",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  }
+}

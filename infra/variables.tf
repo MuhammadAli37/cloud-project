@@ -1,3 +1,7 @@
+# =========================
+# TERRAFORM VARIABLES SECTION
+# =========================
+# Variables let deployments change values such as region and network size safely.
 variable "aws_region" {
   description = "AWS region to deploy into"
   type        = string
@@ -16,8 +20,8 @@ variable "environment" {
   default     = "production"
 }
 
-variable "google_api_key" {
-  description = "Google Gemini API key passed to the container at runtime"
+variable "openai_api_key" {
+  description = "OpenAI API key passed to the ECS container at runtime as OPENAI_API_KEY"
   type        = string
   sensitive   = true
 }

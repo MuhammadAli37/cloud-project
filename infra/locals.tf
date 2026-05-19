@@ -1,3 +1,7 @@
+# =========================
+# TERRAFORM LOCALS SECTION
+# =========================
+# Locals define shared names and tags so AWS resources stay consistent.
 locals {
   name_prefix = "${var.app_name}-${var.environment}"
 

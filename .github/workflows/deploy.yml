@@ -89,9 +89,10 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
+          # OPENAI_API_KEY is sourced from the production GitHub Actions secret.
           terraform plan \
             -var="aws_region=${AWS_REGION}" \
-            -var="google_api_key=${{ secrets.GOOGLE_API_KEY }}" \
+            -var="openai_api_key=${{ secrets.OPENAI_API_KEY }}" \
             -out=tfplan
           echo "✅ Terraform plan complete"
 
@@ -123,8 +124,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [[ -z "${{ secrets.GOOGLE_API_KEY }}" ]]; then
-            echo "❌ GOOGLE_API_KEY secret is required."
+          if [[ -z "${{ secrets.OPENAI_API_KEY }}" ]]; then
+            echo "❌ OPENAI_API_KEY secret is required."
             exit 1
           fi
           if [[ -z "${{ vars.AWS_ROLE_TO_ASSUME }}" ]]; then
@@ -188,8 +189,9 @@ jobs:
           task-definition: task-definition.json
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build.outputs.image_uri }}
+          # OPENAI_API_KEY is injected into the ECS/Fargate task from GitHub Actions secrets.
           environment-variables: |
-            GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
 
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2

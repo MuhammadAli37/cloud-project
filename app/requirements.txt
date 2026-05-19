@@ -1,0 +1,23 @@
+# =========================
+# DEPENDENCY LIST SECTION
+# =========================
+# These packages install Streamlit, AI/RAG, document parsing, ChromaDB,
+# web crawling, analytics, email, AWS, and scheduling support.
+streamlit
+langchain
+langchain-openai
+langchain-community
+langchain-chroma
+chromadb
+openai
+boto3
+python-dotenv
+requests
+beautifulsoup4
+python-docx
+python-pptx
+pypdf
+pandas
+plotly
+schedule
+croniter

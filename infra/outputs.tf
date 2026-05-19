@@ -1,3 +1,7 @@
+# =========================
+# TERRAFORM OUTPUTS SECTION
+# =========================
+# Outputs print useful deployment values after terraform apply completes.
 output "app_url" {
   description = "Public URL of the SHU Chatbot (via ALB)"
   value       = "http://${aws_lb.main.dns_name}"

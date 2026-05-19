@@ -1,14 +1,20 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# SHU Chatbot — AWS Infrastructure
+# =========================
+# AWS DEPLOYMENT LOGIC SECTION
+# =========================
+# Terraform creates the cloud infrastructure for running the Streamlit app on AWS.
+# Main resources: VPC networking, ECR image repository, ECS Fargate service,
+# Application Load Balancer, IAM roles, security groups, and CloudWatch logs.
+# =========================
+# SHU Chatbot - AWS Infrastructure
 # Resources: VPC, ECR, ECS Fargate, ALB, Security Groups, IAM, CloudWatch
-# ─────────────────────────────────────────────────────────────────────────────
+# =========================
 
-# ── Data sources ──────────────────────────────────────────────────────────────
+# =========================
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
-# ── VPC ───────────────────────────────────────────────────────────────────────
+# =========================
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
@@ -50,7 +56,7 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# ── Security Groups ───────────────────────────────────────────────────────────
+# =========================
 
 # ALB: accept HTTP from anywhere
 resource "aws_security_group" "alb" {
@@ -98,7 +104,7 @@ resource "aws_security_group" "ecs_tasks" {
   tags = merge(local.common_tags, { Name = "${local.name_prefix}-ecs-sg" })
 }
 
-# ── ECR Repository ────────────────────────────────────────────────────────────
+# =========================
 resource "aws_ecr_repository" "app" {
   name                 = local.name_prefix
   image_tag_mutability = "MUTABLE"
@@ -128,14 +134,14 @@ resource "aws_ecr_lifecycle_policy" "app" {
   })
 }
 
-# ── CloudWatch Log Group ──────────────────────────────────────────────────────
+# =========================
 resource "aws_cloudwatch_log_group" "app" {
   name              = "/ecs/${local.name_prefix}"
   retention_in_days = 30
   tags              = local.common_tags
 }
 
-# ── IAM — ECS Task Execution Role ────────────────────────────────────────────
+# =========================
 resource "aws_iam_role" "ecs_execution" {
   name = "${local.name_prefix}-ecs-execution-role"
 
@@ -156,7 +162,7 @@ resource "aws_iam_role_policy_attachment" "ecs_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# ── IAM — ECS Task Role (runtime permissions) ─────────────────────────────────
+# =========================
 resource "aws_iam_role" "ecs_task" {
   name = "${local.name_prefix}-ecs-task-role"
 
@@ -172,7 +178,7 @@ resource "aws_iam_role" "ecs_task" {
   tags = local.common_tags
 }
 
-# ── ECS Cluster ───────────────────────────────────────────────────────────────
+# =========================
 resource "aws_ecs_cluster" "main" {
   name = "${local.name_prefix}-cluster"
 
@@ -195,7 +201,7 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
   }
 }
 
-# ── ECS Task Definition ───────────────────────────────────────────────────────
+# =========================
 resource "aws_ecs_task_definition" "app" {
   family                   = local.name_prefix
   network_mode             = "awsvpc"
@@ -214,8 +220,9 @@ resource "aws_ecs_task_definition" "app" {
       protocol      = "tcp"
     }]
 
+    # OPENAI_API_KEY is configured from Terraform/GitHub Actions secrets at deploy time.
     environment = [
-      { name = "GOOGLE_API_KEY", value = var.google_api_key }
+      { name = "OPENAI_API_KEY", value = var.openai_api_key }
     ]
 
     logConfiguration = {
@@ -239,7 +246,7 @@ resource "aws_ecs_task_definition" "app" {
   tags = local.common_tags
 }
 
-# ── ALB ───────────────────────────────────────────────────────────────────────
+# =========================
 resource "aws_lb" "main" {
   name               = "${local.name_prefix}-alb"
   internal           = false
@@ -280,7 +287,7 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-# ── ECS Service ───────────────────────────────────────────────────────────────
+# =========================
 resource "aws_ecs_service" "app" {
   name            = "${local.name_prefix}-service"
   cluster         = aws_ecs_cluster.main.id
