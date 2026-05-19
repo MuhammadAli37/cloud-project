@@ -15,13 +15,13 @@ WORKDIR /app
 # Install system dependencies
 # - build-essential: needed for some Python packages that compile C extensions
 # - curl: used by the ECS health check
-# - libreoffice: needed by Docx2txtLoader and UnstructuredPowerPointLoader
 # - libmagic1: needed by python-magic for file type detection
+# - poppler-utils: needed for PDF reading support
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
-    libreoffice \
     libmagic1 \
+    poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
