@@ -29,8 +29,3 @@ unstructured[docx]>=0.14.0
 unstructured[pptx]>=0.14.0
 
 
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=shu123
-
-
-streamlit run app/main.py
