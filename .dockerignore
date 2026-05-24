@@ -3,6 +3,14 @@ __pycache__
 *.pyc
 *.pyo
 .env
+frontend/node_modules/
+*.log
+analytics_data.json
+chat_sessions.json
+notifications.json
+students.json
+automation_tasks.json
+shu_chatbot.db
 chroma_db_pdf/
 chroma_db_book/
 temp_uploaded.*

@@ -241,6 +241,8 @@ class Config:
     CHROMA_HISTORY_DIR = "chroma_db_history"
     INCOMING_PDFS_DIR = "incoming_pdfs"
     PROCESSED_FILES_PATH = "processed_files.json"
+    RETRIEVER_K = 12
+    MANUAL_KB_VERSION = "shu-manual-kb-2026-05-24-faculty-timetable-v1"
 
     # Scraping
     SHU_BASE_URL = "https://shu.edu.pk"
@@ -980,7 +982,7 @@ class DocumentProcessor:
     def get_retriever(self):
         """Load the existing document retriever without changing the stored data."""
         vs = self._load_document_vector_store()
-        return vs.as_retriever(search_kwargs={"k": 6}) if vs else None
+        return vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K}) if vs else None
 
     def process_document(self, file_path: str, file_name: str,
                         student_id: Optional[str] = None) -> Dict:
@@ -1007,7 +1009,7 @@ class DocumentProcessor:
                 "num_chunks": 0,
                 "processing_time": round(processing_time, 2),
                 "summary": "Document was already processed.",
-                "retriever": vs.as_retriever(search_kwargs={"k": 6}) if vs else None,
+                "retriever": vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K}) if vs else None,
                 "vector_store": vs,
                 "processed_at": processed_files[file_hash].get("processed_at", uploaded_at),
                 "student_id": student_id,
@@ -1054,7 +1056,7 @@ class DocumentProcessor:
                     embedding=self.embeddings,
                     persist_directory=Config.CHROMA_DOC_DIR
                 )
-            retriever = vs.as_retriever(search_kwargs={"k": 6})
+            retriever = vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K})
 
             # Generate summary
             summary = self._generate_summary(documents[:5])
@@ -1253,7 +1255,7 @@ class WebSyncEngine:
             persist_directory=Config.CHROMA_WEB_DIR
         )
 
-        retriever = vs.as_retriever(search_kwargs={"k": 12})
+        retriever = vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K})
         sync_time = time.time() - start_time
 
         self.last_sync = datetime.now()
@@ -1940,8 +1942,13 @@ RULES:
 1. Use the provided context to answer accurately.
 2. For room/lab questions, use exact room names from the timetable.
 3. If information is not in context, say so clearly and provide contact info.
-4. Be helpful, accurate, and concise.
-5. Never invent facts not in the context.
+4. Always give complete answers when the context contains multiple names, items, teachers, rooms, or course mappings.
+5. Do not summarize a list down to only 2-3 entries when more relevant entries are available in context.
+6. For faculty, course, teacher, and timetable questions, list every relevant matching entry from the context.
+7. If an exact course-teacher mapping exists, answer it directly first, then add any useful section/context details.
+8. If context is partial, begin with "Based on available knowledge..." and then answer.
+9. Direct Fact entries are supporting context; do not let them override richer KB, website, or document context.
+10. Never invent facts not in the context.
 
 Question: {query}
 Answer:"""
@@ -1977,8 +1984,14 @@ KNOWLEDGE SOURCES:
 RULES:
 1. Use the provided context to answer accurately.
 2. For room/lab questions, use exact room names from the timetable.
-3. If information is not in context, say so clearly.
-4. Never invent facts not in the context.
+3. Always give complete answers when the context contains multiple names, items, teachers, rooms, or course mappings.
+4. Do not summarize a list down to only 2-3 entries when more relevant entries are available in context.
+5. For faculty, course, teacher, and timetable questions, list every relevant matching entry from the context.
+6. If an exact course-teacher mapping exists, answer it directly first, then add any useful section/context details.
+7. If context is partial, begin with "Based on available knowledge..." and then answer.
+8. Direct Fact entries are supporting context; do not let them override richer KB, website, or document context.
+9. If information is not in context, say so clearly.
+10. Never invent facts not in the context.
 
 Question: {query}
 Answer:"""
@@ -2196,6 +2209,71 @@ class SHUChatbotApp:
         if not st.session_state.get("doc_indexed"):
             self._load_document_index()
 
+        self._log_knowledge_status()
+
+    def _vector_count(self, vector_store) -> int:
+        """Return Chroma collection count for startup/sidebar diagnostics."""
+        if not vector_store:
+            return 0
+        try:
+            return int(vector_store._collection.count())
+        except Exception:
+            return 0
+
+    def _manual_kb_version_present(self, vector_store) -> bool:
+        """Check whether the current built-in KB facts are present in Chroma."""
+        try:
+            result = vector_store._collection.get(
+                where={"kb_version": Config.MANUAL_KB_VERSION},
+                limit=1
+            )
+            return bool(result and result.get("ids"))
+        except Exception:
+            return False
+
+    def _ensure_manual_kb_version(self, vector_store, embeddings):
+        """Append current manual KB facts to an existing KB index when missing."""
+        if self._manual_kb_version_present(vector_store):
+            return
+        from langchain_core.documents import Document as LCDoc
+        splitter = RecursiveCharacterTextSplitter(chunk_size=900, chunk_overlap=150)
+        doc = LCDoc(
+            page_content=SHU_MANUAL_KB,
+            metadata={
+                "source": "SHU Manual KB",
+                "title": "SHU Manual KB Faculty Timetable Facts",
+                "kb_version": Config.MANUAL_KB_VERSION,
+            }
+        )
+        vector_store.add_documents(splitter.split_documents([doc]))
+        logger.info("Appended current SHU_MANUAL_KB facts to existing KB vector store.")
+
+    def _set_knowledge_debug_state(self):
+        """Store retriever availability and vector counts for debug UI."""
+        st.session_state["kb_vector_count"] = self._vector_count(st.session_state.get("kb_vs"))
+        st.session_state["web_vector_count"] = self._vector_count(st.session_state.get("web_vs"))
+        st.session_state["doc_vector_count"] = self._vector_count(st.session_state.get("doc_vs"))
+        st.session_state["kb_retriever_loaded"] = st.session_state.get("kb_retriever") is not None
+        st.session_state["web_retriever_loaded"] = st.session_state.get("web_retriever") is not None
+        st.session_state["doc_retriever_loaded"] = (
+            st.session_state.get("retriever") is not None
+            or st.session_state.get("doc_retriever") is not None
+        )
+
+    def _log_knowledge_status(self):
+        """Log retrieval status at startup/rerun for AWS troubleshooting."""
+        self._set_knowledge_debug_state()
+        logger.info(
+            "Knowledge status | KB: %s vectors, loaded=%s | Web: %s vectors, loaded=%s | "
+            "Documents: %s vectors, loaded=%s",
+            st.session_state.get("kb_vector_count", 0),
+            st.session_state.get("kb_retriever_loaded", False),
+            st.session_state.get("web_vector_count", 0),
+            st.session_state.get("web_retriever_loaded", False),
+            st.session_state.get("doc_vector_count", 0),
+            st.session_state.get("doc_retriever_loaded", False),
+        )
+
     def _init_knowledge_base(self):
         """Initialize the knowledge base."""
         try:
@@ -2207,8 +2285,10 @@ class SHUChatbotApp:
                 vs = Chroma(persist_directory=Config.CHROMA_KB_DIR,
                            embedding_function=embeddings)
                 if vs._collection.count() > 0:
-                    st.session_state["kb_retriever"] = vs.as_retriever(search_kwargs={"k": 10})
+                    self._ensure_manual_kb_version(vs, embeddings)
+                    st.session_state["kb_retriever"] = vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K})
                     st.session_state["kb_vs"] = vs
+                    st.session_state["kb_vector_count"] = self._vector_count(vs)
                     st.session_state["kb_ready"] = True
                     return
 
@@ -2220,8 +2300,10 @@ class SHUChatbotApp:
             chunks = splitter.split_documents([doc])
             vs = Chroma.from_documents(chunks, embedding=embeddings,
                                       persist_directory=Config.CHROMA_KB_DIR)
-            st.session_state["kb_retriever"] = vs.as_retriever(search_kwargs={"k": 10})
+            self._ensure_manual_kb_version(vs, embeddings)
+            st.session_state["kb_retriever"] = vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K})
             st.session_state["kb_vs"] = vs
+            st.session_state["kb_vector_count"] = self._vector_count(vs)
             st.session_state["kb_ready"] = True
 
         except Exception as e:
@@ -2235,8 +2317,9 @@ class SHUChatbotApp:
                 vs = Chroma(persist_directory=Config.CHROMA_WEB_DIR,
                            embedding_function=embeddings)
                 if vs._collection.count() > 0:
-                    st.session_state["web_retriever"] = vs.as_retriever(search_kwargs={"k": 12})
+                    st.session_state["web_retriever"] = vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K})
                     st.session_state["web_vs"] = vs
+                    st.session_state["web_vector_count"] = self._vector_count(vs)
                     st.session_state["web_indexed"] = True
         except Exception as e:
             logger.error(f"Web index load failed: {e}")
@@ -2247,6 +2330,9 @@ class SHUChatbotApp:
             retriever = self.document_processor.get_retriever()
             if retriever:
                 st.session_state["retriever"] = retriever
+                st.session_state["doc_retriever"] = retriever
+                st.session_state["doc_vs"] = self.document_processor._load_document_vector_store()
+                st.session_state["doc_vector_count"] = self._vector_count(st.session_state.get("doc_vs"))
                 st.session_state["doc_indexed"] = True
         except Exception as e:
             logger.error(f"Document index load failed: {e}")
@@ -2316,14 +2402,22 @@ class SHUChatbotApp:
             except Exception:
                 pass
 
-        # Uploaded document retrieval. This Chroma collection is append-only:
+        # Uploaded/synced document retrieval. This Chroma collection is append-only:
         # manual uploads and incoming_pdfs additions share the same vector store.
-        if st.session_state.get("retriever"):
+        doc_retrievers = [
+            st.session_state.get("retriever"),
+            st.session_state.get("doc_retriever"),
+        ]
+        seen_retrievers = set()
+        for retriever in doc_retrievers:
+            if not retriever or id(retriever) in seen_retrievers:
+                continue
+            seen_retrievers.add(id(retriever))
             try:
-                doc_docs = st.session_state["retriever"].invoke(query)
+                doc_docs = retriever.invoke(query)
                 all_docs.extend(doc_docs)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning(f"Document retrieval failed: {e}")
 
         # Deduplicate
         seen, unique = set(), []
@@ -2367,6 +2461,47 @@ Lec Hall 310 (Lab) = Third Floor computer lab.
 Prof. Dr. Sheikh Muhammad Munaf = Professor and Dean FOIT
 Mr. Syed Zahid Badshah = Professor of Practice and Incharge CS Department
 Mr. Ahsan Ul Haq = Lecturer/Program InCharge CTF
+Dr. Sheeraz Arif = Programming Fundamentals, Computer Networks
+Dr. Rizwan Qureshi = Calculus, Machine Learning, Deep Learning
+Dr. Ali Asghar = Digital Logic Design
+Dr. Munsif Jataoi = Multivariate Calculus, Differential Equation
+Saadia Karim = Data Structure & Algorithm, Computer Organization & Assembly Language, Final Year Projects
+Adnan Wahid = Design & Analysis of Algorithms, Computer Architecture
+Hassan Shahzad = Database Systems
+AAiman Odho = Programming Fundamentals, Artificial Intelligence
+Razia Qamar = Compiler Construction, DevOps
+Gul Raeez Gulshan = Cloud Computing
+
+--- COMPUTER SCIENCE / FOIT FACULTY ---
+Prof. Dr. Sheikh Muhammad Munaf: Professor and Dean FOIT.
+Mr. Syed Zahid Badshah: Professor of Practice and Incharge CS Department.
+Mr. Ahsan Ul Haq: Lecturer and Program InCharge CTF.
+Dr. Sheeraz Arif: Programming Fundamentals, Computer Networks.
+Dr. Rizwan Qureshi: Calculus, Machine Learning, Deep Learning.
+Dr. Ali Asghar: Digital Logic Design.
+Dr. Munsif Jataoi: Multivariate Calculus, Differential Equation.
+Saadia Karim: Data Structure & Algorithm, Computer Organization & Assembly Language, Final Year Projects.
+Adnan Wahid: Design & Analysis of Algorithms, Computer Architecture.
+Hassan Shahzad: Database Systems.
+AAiman Odho: Programming Fundamentals, Artificial Intelligence.
+Razia Qamar: Compiler Construction, DevOps.
+Gul Raeez Gulshan: Cloud Computing.
+
+--- COURSE-TEACHER TIMETABLE FACTS ---
+Cloud Computing is taught by Gul Raeez Gulshan.
+Programming Fundamentals is taught by Dr. Sheeraz Arif / AAiman Odho depending on section.
+Computer Networks is taught by Dr. Sheeraz Arif.
+Machine Learning is taught by Dr. Rizwan Qureshi.
+Deep Learning is taught by Dr. Rizwan Qureshi.
+Digital Logic Design is taught by Dr. Ali Asghar.
+Compiler Construction is taught by Razia Qamar.
+DevOps is taught by Razia Qamar.
+Database Systems is taught by Hassan Shahzad.
+Design & Analysis of Algorithms is taught by Adnan Wahid.
+Computer Architecture is taught by Adnan Wahid.
+Data Structure & Algorithm is taught by Saadia Karim.
+Computer Organization & Assembly Language is taught by Saadia Karim.
+Final Year Projects are taught/supervised by Saadia Karim.
 
 === SHU GENERAL INFORMATION ===
 University: Salim Habib University (SHU)
@@ -2375,6 +2510,16 @@ Website: https://shu.edu.pk
 Charter: 25 May 2015, Government of Sindh
 Type: Private, Not-for-Profit
 Accreditations: HEC, PEC, PCP, NCEAC, Government of Sindh
+
+--- ANSWER QUALITY TEST CASES ---
+"CS faculty names" should list the full CS faculty, not only 3 names.
+"Who teaches Cloud Computing?" should answer Gul Raeez Gulshan.
+"Who teaches DevOps?" should answer Razia Qamar.
+"Who teaches Database Systems?" should answer Hassan Shahzad.
+"Who is dean of CS department?" should answer Prof. Dr. Sheikh Muhammad Munaf.
+"Where is room 201?" should answer Second Floor.
+"Where is lab 210?" should answer Second Floor computer lab.
+"What is my secret?" should answer from synced demo PDF if it was synced.
 """
 
 
@@ -2383,6 +2528,29 @@ def get_direct_shu_fact(query: str) -> str:
     import re
     q = query.lower()
     q = q.replace("deann", "dean").replace("deperment", "department")
+
+    course_teacher_map = {
+        "cloud computing": "Cloud Computing is taught by Gul Raeez Gulshan.",
+        "devops": "DevOps is taught by Razia Qamar.",
+        "database systems": "Database Systems is taught by Hassan Shahzad.",
+        "computer networks": "Computer Networks is taught by Dr. Sheeraz Arif.",
+        "machine learning": "Machine Learning is taught by Dr. Rizwan Qureshi.",
+        "deep learning": "Deep Learning is taught by Dr. Rizwan Qureshi.",
+        "digital logic design": "Digital Logic Design is taught by Dr. Ali Asghar.",
+        "compiler construction": "Compiler Construction is taught by Razia Qamar.",
+        "design & analysis of algorithms": "Design & Analysis of Algorithms is taught by Adnan Wahid.",
+        "design and analysis of algorithms": "Design & Analysis of Algorithms is taught by Adnan Wahid.",
+        "computer architecture": "Computer Architecture is taught by Adnan Wahid.",
+        "data structure": "Data Structure & Algorithm is taught by Saadia Karim.",
+        "computer organization": "Computer Organization & Assembly Language is taught by Saadia Karim.",
+        "assembly language": "Computer Organization & Assembly Language is taught by Saadia Karim.",
+        "final year projects": "Final Year Projects are taught/supervised by Saadia Karim.",
+        "programming fundamentals": "Programming Fundamentals is taught by Dr. Sheeraz Arif / AAiman Odho depending on section.",
+    }
+    if any(w in q for w in ["teach", "teaches", "teacher", "instructor", "faculty for", "who takes"]):
+        for course, answer in course_teacher_map.items():
+            if course in q:
+                return answer
 
     if "dean" in q and any(w in q for w in ["cs", "computer science", "foit"]):
         return ("Prof. Dr. Sheikh Muhammad Munaf is the Professor and Dean FOIT, "
@@ -2402,6 +2570,10 @@ def get_direct_shu_fact(query: str) -> str:
             "212": "Second", "309": "Third", "310": "Third", "404": "Fourth",
         }
         if room_no in floor_map:
+            if room_no in {"210", "211"} and "lab" in q:
+                return f"Lec Hall {room_no} (Lab) is on the Second Floor and is a computer lab."
+            if room_no in {"309", "310"} and "lab" in q:
+                return f"Lec Hall {room_no} (Lab) is on the Third Floor and is a computer lab."
             return f"Room/Lec Hall {room_no} is on the {floor_map[room_no]} Floor."
 
     return ""
@@ -3094,6 +3266,9 @@ def main():
         "pdf_processed": False, "retriever": None,
         "theme": "dark", "admin_authenticated": False,
         "admin_username": "",
+        "kb_vector_count": 0, "web_vector_count": 0, "doc_vector_count": 0,
+        "kb_retriever_loaded": False, "web_retriever_loaded": False,
+        "doc_retriever_loaded": False, "doc_retriever": None, "doc_vs": None,
     }
     for k, v in session_defaults.items():
         if k not in st.session_state:
@@ -3185,6 +3360,14 @@ def main():
             icon = "✅" if active else "⚠️"
             st.markdown(f"{icon} {label}")
 
+        with st.expander("Knowledge Debug", expanded=False):
+            st.caption(f"KB vectors: {st.session_state.get('kb_vector_count', 0)}")
+            st.caption(f"Web vectors: {st.session_state.get('web_vector_count', 0)}")
+            st.caption(f"Document vectors: {st.session_state.get('doc_vector_count', 0)}")
+            st.caption(f"KB retriever loaded: {st.session_state.get('kb_retriever_loaded', False)}")
+            st.caption(f"Web retriever loaded: {st.session_state.get('web_retriever_loaded', False)}")
+            st.caption(f"Document retriever loaded: {st.session_state.get('doc_retriever_loaded', False)}")
+
         st.markdown("---")
 
         # Tone selector
@@ -3215,6 +3398,10 @@ def main():
                 )
                 if result["retriever"]:
                     st.session_state["retriever"] = result["retriever"]
+                    st.session_state["doc_retriever"] = result["retriever"]
+                    st.session_state["doc_vs"] = result.get("vector_store")
+                    st.session_state["doc_vector_count"] = app._vector_count(result.get("vector_store"))
+                    st.session_state["doc_retriever_loaded"] = True
                     st.session_state["doc_indexed"] = True
                 st.session_state["pdf_processed"] = not result.get("skipped", False)
                 st.session_state["doc_name"] = uploaded_file.name
@@ -3231,6 +3418,10 @@ def main():
                 retriever = app.document_processor.get_retriever()
                 if retriever:
                     st.session_state["retriever"] = retriever
+                    st.session_state["doc_retriever"] = retriever
+                    st.session_state["doc_vs"] = app.document_processor._load_document_vector_store()
+                    st.session_state["doc_vector_count"] = app._vector_count(st.session_state.get("doc_vs"))
+                    st.session_state["doc_retriever_loaded"] = True
                     st.session_state["doc_indexed"] = True
 
             processed_count = len(result["processed"])
@@ -3261,6 +3452,8 @@ def main():
                 if result["status"] == "success":
                     st.session_state["web_retriever"] = result["retriever"]
                     st.session_state["web_vs"] = result["vector_store"]
+                    st.session_state["web_vector_count"] = app._vector_count(result["vector_store"])
+                    st.session_state["web_retriever_loaded"] = True
                     st.session_state["web_indexed"] = True
                     progress_bar.progress(100)
                     st.success(f"✅ {result['pages_scraped']} pages indexed!")

@@ -29,8 +29,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app source
-COPY app/ .
+# Copy app source and local knowledge artifacts when present.
+# This includes chroma_db_kb, chroma_db_web, chroma_db_doc, incoming_pdfs,
+# and processed_files.json unless they are absent or ignored by .dockerignore.
+COPY . .
 
 # Expose Streamlit port
 # Streamlit listens on port 8501 inside the container.
@@ -43,7 +45,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 # Run Streamlit
 # Start the Streamlit server when the container runs.
 # OPENAI_API_KEY is supplied at runtime by ECS/GitHub Actions, not baked into this image.
-CMD ["streamlit", "run", "main.py", \
+CMD ["streamlit", "run", "app/main.py", \
      "--server.port=8501", \
      "--server.address=0.0.0.0", \
      "--server.headless=true", \

@@ -348,5 +348,155 @@
     "resolved": false,
     "satisfaction_score": null,
     "metadata": {}
+  },
+  "3d7ebd2a811b929f": {
+    "student_id": null,
+    "started_at": "2026-05-21T10:28:21.770901",
+    "messages": [
+      {
+        "role": "user",
+        "content": "CS Semester 5 subjects?",
+        "timestamp": "2026-05-21T10:28:51.533575",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "In CS Semester 5 at Salim Habib University, the subjects are:\n\n- Computer Networks: Dr. Sheeraz Arif (Lec Hall 212)\n- Computer Networks Lab: Junaid (Computing Lab 3)\n- Software Project Management: Muhammad Umer Mehmood (Lec Hall 212)\n- Artificial Intelligence: AAiman Odho (Lec Hall 207)\n- Artificial Intelligence Lab: Shoaib Ahmed (Lec Hall 211)\n- Computer Architecture: Adnan Wahid (Lec Hall 212)\n- Operating Systems: Mahajabeen (Lec Hall 206)\n- Operating Systems Lab: Shoaib Ahmed (Lec Hall 210)\n- Entrepreneurship: Ms. Saman (Lec Hall 205)",
+        "timestamp": "2026-05-21T10:29:04.011829",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "cs semester 2",
+        "timestamp": "2026-05-21T10:29:37.761240",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "In CS Semester 2 at Salim Habib University, the subjects are:\n\n- Object-Oriented Programming (OOP): Ramzan Butt (Lec Hall 206), Ateeque Rahman (Lec Hall 202)\n- OOP Lab: Ramzan Butt (Lec Hall 211), Mariyam Khan (Lec Hall 211)\n- Digital Logic Design: Dr. Ali Asghar (Lec Hall 205)\n- Digital Logic Design Lab: Maha Naeem (Lec Hall 310), Mahajabeen (Lec Hall 211)\n- Entrepreneurship: Darwesh (Lec Hall 208), Rehan Butt (Lec Hall 208)\n- Expository Writing: Dr. Nasreen (Lec Hall 202), Mehak (Lec Hall 208)\n- Linear Algebra: Sumra Khan (Lec Hall 202), Komal (Lec Hall 206)",
+        "timestamp": "2026-05-21T10:29:41.725144",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "8d7936647deb8765": {
+    "student_id": null,
+    "started_at": "2026-05-24T18:20:12.352219",
+    "messages": [
+      {
+        "role": "user",
+        "content": "cs faculty name",
+        "timestamp": "2026-05-24T18:22:06.209537",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Here are some faculty members from the Department of Computer Science at Salim Habib University:\n\n- Dr. Sheeraz Arif: Programming Fundamentals, Computer Networks\n- Dr. Rizwan Qureshi: Calculus, Machine Learning, Deep Learning\n- Dr. Ali Asghar: Digital Logic Design\n- Dr. Munsif Jataoi: Multivariate Calculus, Differential Equation\n- Saadia Karim: Data Structure & Algorithm, Computer Org & Assembly Language, Final Year Projects\n- Adnan Wahid: Design & Analysis of Algorithms, Computer Architecture\n- Hassan Shahzad: Database Systems\n- AAiman Odho: Programming Fundamentals, Artificial Intelligence\n- Razia Qamar: Compiler Construction, DevOps\n\nIf you need more specific information, feel free to ask!",
+        "timestamp": "2026-05-24T18:22:09.216929",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "What is my secret?",
+        "timestamp": "2026-05-24T18:25:07.013162",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "I'm here to help with any questions you have about Salim Habib University, but I don't have access to personal information or secrets. If you have any questions about courses, faculty, or university services, feel free to ask!",
+        "timestamp": "2026-05-24T18:25:08.649138",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "Where is room 201?",
+        "timestamp": "2026-05-24T18:44:56.330591",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Room 201 is located on the second floor at Salim Habib University.",
+        "timestamp": "2026-05-24T18:44:58.190859",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "Who is the incharge of computer science department?",
+        "timestamp": "2026-05-24T18:46:13.193099",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Mr. Syed Zahid Badshah is the Professor of Practice and Incharge of the Department of Computer Science at Salim Habib University.",
+        "timestamp": "2026-05-24T18:46:14.656672",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "who teaches cloud computing",
+        "timestamp": "2026-05-24T18:47:33.548658",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Cloud Computing is taught by Gul Raeez Gulshan at Salim Habib University.",
+        "timestamp": "2026-05-24T18:47:34.565515",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "e6ab78918b20dacf": {
+    "student_id": null,
+    "started_at": "2026-05-24T19:33:54.573651",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Who teaches Cloud Computing?",
+        "timestamp": "2026-05-24T19:34:09.497289",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Cloud Computing is taught by Gul Raeez Gulshan.",
+        "timestamp": "2026-05-24T19:34:12.730292",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "Who teaches Database Systems?",
+        "timestamp": "2026-05-24T19:34:51.396005",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Database Systems is taught by Hassan Shahzad.",
+        "timestamp": "2026-05-24T19:34:52.446406",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "Who teaches entrepreneurship?",
+        "timestamp": "2026-05-24T19:35:32.111562",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Entrepreneurship is taught by several instructors at Salim Habib University:\n\n- Ms. Saman teaches Entrepreneurship in Lecture Hall 205.\n- Mehmood Ali teaches Entrepreneurship (AI).\n- Rehan Butt teaches Entrepreneurship (CS Sem 2 B) in Lecture Hall 208.\n- Darwesh teaches Entrepreneurship (CS Sem 2 A) in Lecture Hall 208.\n- Shah Muhammad Saleem teaches Entrepreneurship (SE Sem 2) in Lecture Hall 101.",
+        "timestamp": "2026-05-24T19:35:34.292692",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
   }
 }
