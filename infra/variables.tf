@@ -26,6 +26,18 @@ variable "openai_api_key" {
   sensitive   = true
 }
 
+variable "admin_username" {
+  description = "Admin username passed to the ECS container at runtime as ADMIN_USERNAME"
+  type        = string
+  sensitive   = true
+}
+
+variable "admin_password" {
+  description = "Admin password passed to the ECS container at runtime as ADMIN_PASSWORD"
+  type        = string
+  sensitive   = true
+}
+
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string

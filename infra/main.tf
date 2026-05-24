@@ -220,9 +220,13 @@ resource "aws_ecs_task_definition" "app" {
       protocol      = "tcp"
     }]
 
-    # OPENAI_API_KEY is configured from Terraform/GitHub Actions secrets at deploy time.
+    # ECS receives runtime environment variables from Terraform during the
+    # baseline task definition creation. GitHub Actions later refreshes the
+    # same values from repository/environment Secrets when rendering a deploy.
     environment = [
-      { name = "OPENAI_API_KEY", value = var.openai_api_key }
+      { name = "OPENAI_API_KEY", value = var.openai_api_key },
+      { name = "ADMIN_USERNAME", value = var.admin_username },
+      { name = "ADMIN_PASSWORD", value = var.admin_password }
     ]
 
     logConfiguration = {

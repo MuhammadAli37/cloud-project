@@ -61,15 +61,24 @@ from croniter import croniter  # Calculates next run times from cron expressions
 load_dotenv()  # Makes local .env configuration available before the app starts.
 
 
-def _read_secret(name: str, default: str = "") -> str:
-    """Read credentials from environment variables first, then Streamlit secrets."""
+def _is_local_development() -> bool:
+    """Detect local runs so defaults are never used inside AWS ECS."""
+    return not os.getenv("ECS_CONTAINER_METADATA_URI_V4") and not os.getenv("ECS_CONTAINER_METADATA_URI")
+
+
+def _read_admin_credential(name: str, local_default: str) -> str:
+    """Read admin credentials from env vars, with safe defaults only for local development."""
+    # Local development may use a .env file loaded above:
+    # ADMIN_USERNAME=admin
+    # ADMIN_PASSWORD=shu123
     value = os.getenv(name)
     if value:
         return value
-    try:
-        return str(st.secrets.get(name, default))
-    except Exception:
-        return default
+
+    if _is_local_development():
+        return local_default
+
+    return ""
 
 # =========================
 # LOGGING CONFIGURATION
@@ -215,11 +224,12 @@ class Config:
     EMBEDDING_MODEL = "text-embedding-3-small"
 
     # Admin login credentials.
-    # Configure these in .env or Streamlit secrets:
-    # ADMIN_USERNAME=admin
-    # ADMIN_PASSWORD=shu123
-    ADMIN_USERNAME = _read_secret("ADMIN_USERNAME")
-    ADMIN_PASSWORD = _read_secret("ADMIN_PASSWORD")
+    # Local development can use .env values loaded by load_dotenv() above, and
+    # falls back to admin/shu123 only outside ECS when no env vars are present.
+    # Production deployments should configure ADMIN_USERNAME and ADMIN_PASSWORD
+    # as GitHub Secrets; deploy.yml injects them into the ECS task definition.
+    ADMIN_USERNAME = _read_admin_credential("ADMIN_USERNAME", "admin")
+    ADMIN_PASSWORD = _read_admin_credential("ADMIN_PASSWORD", "shu123")
 
     # AWS
     AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
@@ -257,6 +267,15 @@ class Config:
     NOTIFICATIONS_PATH = "notifications.json"
     STUDENTS_PATH = "students.json"
     TASKS_PATH = "automation_tasks.json"
+
+
+logger.info(
+    "Startup admin credential debug: loaded=%s (username_configured=%s, password_configured=%s, local_dev_fallback_allowed=%s)",
+    bool(Config.ADMIN_USERNAME and Config.ADMIN_PASSWORD),
+    bool(Config.ADMIN_USERNAME),
+    bool(Config.ADMIN_PASSWORD),
+    _is_local_development(),
+)
 
 
 # =========================

@@ -89,10 +89,13 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          # OPENAI_API_KEY is sourced from the production GitHub Actions secret.
+          # Production runtime secrets come from GitHub Secrets and are passed
+          # into Terraform so the ECS task definition has the baseline values.
           terraform plan \
             -var="aws_region=${AWS_REGION}" \
             -var="openai_api_key=${{ secrets.OPENAI_API_KEY }}" \
+            -var="admin_username=${{ secrets.ADMIN_USERNAME }}" \
+            -var="admin_password=${{ secrets.ADMIN_PASSWORD }}" \
             -out=tfplan
           echo "✅ Terraform plan complete"
 
@@ -126,6 +129,14 @@ jobs:
           set -euo pipefail
           if [[ -z "${{ secrets.OPENAI_API_KEY }}" ]]; then
             echo "❌ OPENAI_API_KEY secret is required."
+            exit 1
+          fi
+          if [[ -z "${{ secrets.ADMIN_USERNAME }}" ]]; then
+            echo "ADMIN_USERNAME secret is required."
+            exit 1
+          fi
+          if [[ -z "${{ secrets.ADMIN_PASSWORD }}" ]]; then
+            echo "ADMIN_PASSWORD secret is required."
             exit 1
           fi
           if [[ -z "${{ vars.AWS_ROLE_TO_ASSUME }}" ]]; then
@@ -189,9 +200,12 @@ jobs:
           task-definition: task-definition.json
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build.outputs.image_uri }}
-          # OPENAI_API_KEY is injected into the ECS/Fargate task from GitHub Actions secrets.
+          # GitHub Secrets are injected into the rendered ECS task definition
+          # here, so the running Fargate task receives them as environment vars.
           environment-variables: |
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
+            ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
 
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
