@@ -17,6 +17,7 @@ beautifulsoup4
 python-docx
 python-pptx
 pypdf
+pdfplumber
 pandas
 plotly
 schedule

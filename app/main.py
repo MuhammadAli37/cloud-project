@@ -23,6 +23,8 @@ import logging  # Records system activity and errors in shu_chatbot.log.
 import requests  # Downloads pages from the SHU website during crawling.
 import boto3  # Connects to AWS services such as Bedrock when configured.
 import hmac  # Compares admin credentials safely to avoid timing leaks.
+import re  # Normalizes extracted website text without dropping short facts.
+import shutil  # Safely refreshes only the website ChromaDB when requested.
 
 # Streamlit and data visualization imports build the web interface and charts.
 import streamlit as st  # Main framework used to render the SHU Assistant UI.
@@ -37,13 +39,17 @@ from email.mime.multipart import MIMEMultipart  # Combines email headers and bod
 from typing import List, Dict, Optional, Tuple  # Documents expected variable shapes.
 from dataclasses import dataclass, field, asdict  # Creates clean data containers.
 from enum import Enum  # Defines fixed choices like departments and notification types.
-from urllib.parse import urljoin, urlparse  # Safely combines and checks website URLs.
+from urllib.parse import urljoin, urlparse, urlunparse  # Safely combines and checks website URLs.
 from pathlib import Path  # Works with file and folder paths across operating systems.
 from concurrent.futures import ThreadPoolExecutor, as_completed  # Supports parallel page fetching.
 from functools import lru_cache  # Caches repeated results for faster reruns.
 
 # Third-party AI, document, crawling, and scheduling libraries.
 from bs4 import BeautifulSoup  # Extracts readable text and links from HTML pages.
+try:
+    import pdfplumber  # Extracts PDF text and tables while preserving layout-oriented facts.
+except ImportError:
+    pdfplumber = None
 from dotenv import load_dotenv  # Loads local .env values during development.
 from langchain_community.document_loaders import PyPDFLoader  # Reads PDF pages into LangChain documents.
 from langchain_text_splitters import RecursiveCharacterTextSplitter  # Splits long documents into searchable chunks.
@@ -251,12 +257,16 @@ class Config:
     CHROMA_HISTORY_DIR = "chroma_db_history"
     INCOMING_PDFS_DIR = "incoming_pdfs"
     PROCESSED_FILES_PATH = "processed_files.json"
-    RETRIEVER_K = 12
+    RETRIEVER_K = 15
+    WEB_RETRIEVER_K = 20
+    DOC_RETRIEVER_K = 15
+    WEB_CHUNK_SIZE = 1000
+    WEB_CHUNK_OVERLAP = 250
     MANUAL_KB_VERSION = "shu-manual-kb-2026-05-24-faculty-timetable-v1"
 
     # Scraping
     SHU_BASE_URL = "https://shu.edu.pk"
-    MAX_PAGES = 150
+    MAX_PAGES = 500
     REQUEST_DELAY = 0.4
     SYNC_INTERVAL_HOURS = 24
 
@@ -700,9 +710,7 @@ class QueryRouter:
         Department.COMPUTER_SCIENCE: {
             "email": "cs@shu.edu.pk",
             "phone": "+92-21-111-SHU-SHU",
-            "office": "FOIT Building, 2nd Floor",
-            "head": "Prof. Dr. Sheikh Muhammad Munaf (Dean FOIT)",
-            "incharge": "Mr. Syed Zahid Badshah"
+            "office": "FOIT Building, 2nd Floor"
         },
         Department.ADMISSIONS: {
             "email": "admissions@shu.edu.pk",
@@ -1001,7 +1009,7 @@ class DocumentProcessor:
     def get_retriever(self):
         """Load the existing document retriever without changing the stored data."""
         vs = self._load_document_vector_store()
-        return vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K}) if vs else None
+        return vs.as_retriever(search_kwargs={"k": Config.DOC_RETRIEVER_K}) if vs else None
 
     def process_document(self, file_path: str, file_name: str,
                         student_id: Optional[str] = None) -> Dict:
@@ -1028,7 +1036,7 @@ class DocumentProcessor:
                 "num_chunks": 0,
                 "processing_time": round(processing_time, 2),
                 "summary": "Document was already processed.",
-                "retriever": vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K}) if vs else None,
+                "retriever": vs.as_retriever(search_kwargs={"k": Config.DOC_RETRIEVER_K}) if vs else None,
                 "vector_store": vs,
                 "processed_at": processed_files[file_hash].get("processed_at", uploaded_at),
                 "student_id": student_id,
@@ -1075,7 +1083,7 @@ class DocumentProcessor:
                     embedding=self.embeddings,
                     persist_directory=Config.CHROMA_DOC_DIR
                 )
-            retriever = vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K})
+            retriever = vs.as_retriever(search_kwargs={"k": Config.DOC_RETRIEVER_K})
 
             # Generate summary
             summary = self._generate_summary(documents[:5])
@@ -1223,7 +1231,17 @@ class WebSyncEngine:
     """Automated web scraping and synchronization from shu.edu.pk."""
 
     SHU_SEEDS = [
-        "https://shu.edu.pk", "https://shu.edu.pk/about-us/",
+        "https://shu.edu.pk/",
+        "https://shu.edu.pk/library/",
+        "https://shu.edu.pk/library/facts-figures/",
+        "https://shu.edu.pk/library/using-the-library/",
+        "https://shu.edu.pk/library/general-rules-regulations/",
+        "https://shu.edu.pk/library/using-the-library-collection-location/",
+        "https://shu.edu.pk/wp-content/uploads/2025/01/Student-Handbook.pdf",
+        "https://shu.edu.pk/wp-content/uploads/prospectus.pdf",
+        "https://shu.edu.pk/about-us/",
+        "https://shu.edu.pk/faculty/",
+        "https://shu.edu.pk/departments/",
         "https://shu.edu.pk/Faculty-of-Engineering/",
         "https://shu.edu.pk/Faculty-of-Information-Technology/",
         "https://shu.edu.pk/Faculty-of-Management-Science/",
@@ -1234,10 +1252,33 @@ class WebSyncEngine:
         "https://shu.edu.pk/admission/admission-process/",
         "https://shu.edu.pk/admission/scholarships-financial-aid/",
         "https://shu.edu.pk/admission/tution/",
+        "https://shu.edu.pk/fee-structure/",
+        "https://shu.edu.pk/scholarships-financial-aid/",
         "https://shu.edu.pk/FoIT/bs-computer-science/",
+        "https://shu.edu.pk/FoIT/ms-computer-science/",
         "https://shu.edu.pk/FoIT/bs-artificial-intelligence/",
         "https://shu.edu.pk/programs/",
+        "https://shu.edu.pk/library/",
+        "https://shu.edu.pk/examination/",
+        "https://shu.edu.pk/student-affairs/",
+        "https://shu.edu.pk/contact-us/",
+        "https://shu.edu.pk/academic-calendar/",
+        "https://shu.edu.pk/oric/",
+        "https://shu.edu.pk/research/",
+        "https://shu.edu.pk/labs/",
+        "https://shu.edu.pk/events/",
         "https://shu.edu.pk/news/",
+    ]
+
+    PRIORITY_KEYWORDS = [
+        "library", "tariq-amin-library", "tariq amin library", "facilities",
+        "infrastructure", "campus", "academic-block", "academic block",
+        "faculty", "faculty-of-information-technology", "department",
+        "computer-science", "programs", "admissions", "admission",
+        "scholarships", "tuition", "tution", "fee", "examination",
+        "student-affairs", "contact", "prospectus", "handbook", "labs",
+        "research", "oric", "news", "announcements", "academic-calendar",
+        "transport", "societies",
     ]
 
     HEADERS = {
@@ -1252,8 +1293,13 @@ class WebSyncEngine:
         self.sync_history: List[Dict] = []
         self.pages_indexed: int = 0
         self.chunks_indexed: int = 0
+        self.pdfs_found: int = 0
+        self.pdf_chunks_indexed: int = 0
+        self.urls_indexed: List[str] = []
+        self.pdf_urls_indexed: List[str] = []
+        self.last_crawl_time: Optional[datetime] = None
 
-    def full_sync(self, progress_callback=None) -> Dict:
+    def full_sync(self, progress_callback=None, refresh: bool = False) -> Dict:
         """Perform full website synchronization."""
         start_time = time.time()
         logger.info("Starting full website synchronization...")
@@ -1265,26 +1311,69 @@ class WebSyncEngine:
             return {"status": "failed", "error": "No content scraped"}
 
         # Build vector store
-        splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
-        chunks = splitter.split_documents(docs)
-
-        os.makedirs(Config.CHROMA_WEB_DIR, exist_ok=True)
-        vs = Chroma.from_documents(
-            chunks, embedding=self.embeddings,
-            persist_directory=Config.CHROMA_WEB_DIR
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=Config.WEB_CHUNK_SIZE,
+            chunk_overlap=Config.WEB_CHUNK_OVERLAP
         )
+        chunks = splitter.split_documents(docs)
+        crawled_at = datetime.now().isoformat()
+        pdf_chunk_count = 0
+        for chunk in chunks:
+            source_type = chunk.metadata.get("source_type") or chunk.metadata.get("content_type") or "html"
+            chunk.metadata.update({
+                "source_url": chunk.metadata.get("source_url") or chunk.metadata.get("url") or chunk.metadata.get("source", ""),
+                "source_type": source_type,
+                "page_title": chunk.metadata.get("page_title") or chunk.metadata.get("title", ""),
+                "crawled_at": chunk.metadata.get("crawled_at") or chunk.metadata.get("crawl_timestamp") or crawled_at,
+                "section": chunk.metadata.get("section") or self._infer_section(
+                    chunk.metadata.get("source_url") or chunk.metadata.get("url") or chunk.metadata.get("source", "")
+                ),
+            })
+            if source_type == "pdf":
+                pdf_chunk_count += 1
 
-        retriever = vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K})
+        web_dir = os.path.abspath(Config.CHROMA_WEB_DIR)
+        workspace_dir = os.path.abspath(os.getcwd())
+        if refresh and os.path.commonpath([web_dir, workspace_dir]) == workspace_dir:
+            shutil.rmtree(web_dir, ignore_errors=True)
+        os.makedirs(Config.CHROMA_WEB_DIR, exist_ok=True)
+        if not refresh and os.path.exists(Config.CHROMA_WEB_DIR):
+            vs = Chroma(persist_directory=Config.CHROMA_WEB_DIR, embedding_function=self.embeddings)
+            if vs._collection.count() > 0:
+                vs.add_documents(chunks)
+            else:
+                vs = Chroma.from_documents(
+                    chunks, embedding=self.embeddings,
+                    persist_directory=Config.CHROMA_WEB_DIR
+                )
+        else:
+            vs = Chroma.from_documents(
+                chunks, embedding=self.embeddings,
+                persist_directory=Config.CHROMA_WEB_DIR
+            )
+
+        retriever = vs.as_retriever(search_kwargs={"k": Config.WEB_RETRIEVER_K})
         sync_time = time.time() - start_time
 
         self.last_sync = datetime.now()
-        self.pages_indexed = len(docs)
+        self.last_crawl_time = self.last_sync
         self.chunks_indexed = len(chunks)
+        self.pdf_chunks_indexed = pdf_chunk_count
+        unique_urls = sorted({
+            chunk.metadata.get("source_url") or chunk.metadata.get("url") or chunk.metadata.get("source", "")
+            for chunk in chunks
+        })
+        unique_urls = [url for url in unique_urls if url]
 
         result = {
             "status": "success",
-            "pages_scraped": len(docs),
+            "pages_scraped": self.pages_indexed,
+            "documents_indexed": len(docs),
             "chunks_created": len(chunks),
+            "website_chunks_indexed": len(chunks),
+            "pdfs_found": self.pdfs_found,
+            "pdf_chunks_indexed": pdf_chunk_count,
+            "urls_indexed": unique_urls,
             "sync_time": round(sync_time, 2),
             "timestamp": self.last_sync.isoformat(),
             "retriever": retriever,
@@ -1296,13 +1385,20 @@ class WebSyncEngine:
             if k not in ('retriever', 'vector_store')
         })
 
-        logger.info(f"Sync complete: {len(docs)} pages, {len(chunks)} chunks in {sync_time:.1f}s")
+        logger.info(
+            f"Sync complete: {self.pages_indexed} pages crawled, {len(docs)} documents, "
+            f"{len(chunks)} chunks indexed, {self.pdfs_found} PDFs indexed, "
+            f"{pdf_chunk_count} PDF chunks, {len(unique_urls)} URLs indexed in {sync_time:.1f}s"
+        )
+        logger.info("Website URLs indexed: %s", unique_urls[:80])
+        logger.info("Website PDFs indexed: %s", self.pdf_urls_indexed[:40])
         return result
 
     def incremental_sync(self) -> Dict:
         """Perform incremental sync (only new/changed pages)."""
         # Check if full sync needed
-        if not self.last_sync or (datetime.now() - self.last_sync).hours >= Config.SYNC_INTERVAL_HOURS:
+        if (not self.last_sync
+                or (datetime.now() - self.last_sync).total_seconds() >= Config.SYNC_INTERVAL_HOURS * 3600):
             return self.full_sync()
 
         # Otherwise just check key pages for updates
@@ -1322,7 +1418,10 @@ class WebSyncEngine:
             try:
                 vs = Chroma(persist_directory=Config.CHROMA_WEB_DIR,
                            embedding_function=self.embeddings)
-                splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
+                splitter = RecursiveCharacterTextSplitter(
+                    chunk_size=Config.WEB_CHUNK_SIZE,
+                    chunk_overlap=Config.WEB_CHUNK_OVERLAP
+                )
                 chunks = splitter.split_documents(updated_docs)
                 vs.add_documents(chunks)
                 logger.info(f"Incremental sync: {len(chunks)} chunks updated")
@@ -1333,20 +1432,43 @@ class WebSyncEngine:
         return {"status": "no_updates"}
 
     def _crawl_website(self, progress_callback=None) -> List[Document]:
-        """Crawl shu.edu.pk website."""
+        """Recursively crawl SHU internal HTML pages and linked PDFs."""
         visited = set()
-        queue = list(self.SHU_SEEDS)
+        priority_queue = []
+        for url in self.SHU_SEEDS:
+            norm = self._normalize_url(url)
+            if norm not in priority_queue:
+                priority_queue.append(norm)
+        recursive_queue = []
         docs = []
-        skip_exts = (".pdf", ".jpg", ".jpeg", ".png", ".gif", ".zip",
-                     ".docx", ".xlsx", ".mp4", ".svg", ".ico", ".css", ".js")
+        skip_exts = (".jpg", ".jpeg", ".png", ".gif", ".zip", ".docx", ".doc",
+                     ".xlsx", ".xls", ".pptx", ".ppt", ".mp4", ".mov", ".avi",
+                     ".svg", ".ico", ".css", ".js", ".webp", ".woff", ".woff2")
         page_count = 0
+        self.pdfs_found = 0
+        self.pdf_chunks_indexed = 0
+        self.urls_indexed = []
+        self.pdf_urls_indexed = []
+        crawl_timestamp = datetime.now().isoformat()
 
-        while queue and page_count < Config.MAX_PAGES:
-            url = queue.pop(0)
-            norm = url.split("#")[0].rstrip("/")
+        while (priority_queue or recursive_queue) and page_count < Config.MAX_PAGES:
+            url = priority_queue.pop(0) if priority_queue else recursive_queue.pop(0)
+            norm = self._normalize_url(url)
             if norm in visited:
                 continue
             visited.add(norm)
+
+            if self._is_pdf_url(norm):
+                pdf_docs = self._fetch_pdf(norm)
+                if pdf_docs:
+                    self.pdfs_found += 1
+                    self.pdf_urls_indexed.append(norm)
+                    self.urls_indexed.append(norm)
+                    docs.extend(pdf_docs)
+                if progress_callback:
+                    progress_callback(page_count, Config.MAX_PAGES, len(docs), self.pdfs_found)
+                time.sleep(Config.REQUEST_DELAY)
+                continue
 
             soup = self._fetch_page(url)
             if soup is None:
@@ -1355,34 +1477,85 @@ class WebSyncEngine:
             content = self._extract_content(soup, url)
             if len(content) >= 60:
                 title = soup.find("title")
+                page_title = title.get_text(" ", strip=True) if title else url
                 docs.append(Document(
                     page_content=content,
                     metadata={
-                        "source": url,
-                        "title": title.get_text(strip=True) if title else url,
-                        "scraped_at": datetime.now().isoformat()
+                        "source": norm,
+                        "source_url": norm,
+                        "url": norm,
+                        "title": page_title,
+                        "page_title": page_title,
+                        "crawl_timestamp": crawl_timestamp,
+                        "crawled_at": crawl_timestamp,
+                        "content_type": "html",
+                        "source_type": "html",
+                        "section": self._infer_section(norm),
                     }
                 ))
+                self.urls_indexed.append(norm)
 
             page_count += 1
             if progress_callback:
-                progress_callback(page_count, Config.MAX_PAGES, len(docs))
+                progress_callback(page_count, Config.MAX_PAGES, len(docs), self.pdfs_found)
 
             # Extract links
             for a in soup.find_all("a", href=True):
                 href = a["href"].strip()
                 if not href or href.startswith(("mailto:", "tel:", "javascript:", "#")):
                     continue
-                full = urljoin(url, href).split("#")[0].rstrip("/")
-                parsed = urlparse(full)
-                if ("shu.edu.pk" in parsed.netloc
-                        and full not in visited and full not in queue
-                        and not any(full.lower().endswith(e) for e in skip_exts)):
-                    queue.append(full)
+                full = self._normalize_url(urljoin(url, href))
+                if (self._is_internal_url(full)
+                        and full not in visited
+                        and full not in priority_queue
+                        and full not in recursive_queue
+                        and (self._is_pdf_url(full)
+                             or not any(urlparse(full).path.lower().endswith(e) for e in skip_exts))):
+                    self._enqueue_url(recursive_queue, full)
 
             time.sleep(Config.REQUEST_DELAY)
 
+        self.pages_indexed = page_count
+        logger.info(
+            "Crawl finished: pages crawled=%s, PDFs indexed=%s, documents=%s, URLs indexed=%s",
+            self.pages_indexed, self.pdfs_found, len(docs), len(self.urls_indexed)
+        )
         return docs
+
+    def _enqueue_url(self, queue: List[str], url: str):
+        """Place priority SHU sections earlier while still crawling broadly."""
+        if self._priority_score(url) > 0:
+            insert_at = 0
+            while insert_at < len(queue) and self._priority_score(queue[insert_at]) > 0:
+                insert_at += 1
+            queue.insert(insert_at, url)
+        else:
+            queue.append(url)
+
+    def _priority_score(self, url: str) -> int:
+        """Rank pages likely to contain high-value university facts."""
+        text = url.lower().replace("%20", " ").replace("_", "-")
+        return sum(1 for keyword in self.PRIORITY_KEYWORDS if keyword.lower() in text)
+
+    def _normalize_url(self, url: str) -> str:
+        """Remove fragments, normalize scheme/host casing, and trim trailing slashes."""
+        parsed = urlparse(url.split("#")[0])
+        scheme = parsed.scheme or "https"
+        netloc = parsed.netloc.lower()
+        path = parsed.path or "/"
+        if path != "/":
+            path = path.rstrip("/")
+        return urlunparse((scheme, netloc, path, "", parsed.query, ""))
+
+    def _is_internal_url(self, url: str) -> bool:
+        """Allow only shu.edu.pk pages; reject external hosts and non-main SHU subdomains."""
+        parsed = urlparse(url)
+        host = parsed.netloc.lower()
+        return parsed.scheme in ("http", "https") and host in ("shu.edu.pk", "www.shu.edu.pk")
+
+    def _is_pdf_url(self, url: str) -> bool:
+        """Treat direct .pdf links as ingestible documents."""
+        return urlparse(url).path.lower().endswith(".pdf")
 
     def _fetch_page(self, url: str):
         """Download a single SHU website page for the crawler."""
@@ -1394,8 +1567,82 @@ class WebSyncEngine:
             pass
         return None
 
-    def _extract_content(self, soup, url: str) -> str:
-        """Extract readable text and internal links from one HTML page."""
+    def _fetch_pdf(self, url: str) -> List[Document]:
+        """Download and extract text from a linked SHU PDF."""
+        tmp_path = None
+        try:
+            r = requests.get(url, headers=self.HEADERS, timeout=30)
+            content_type = r.headers.get("Content-Type", "").lower()
+            if r.status_code != 200 or ("pdf" not in content_type and not self._is_pdf_url(url)):
+                return []
+
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+                tmp.write(r.content)
+                tmp_path = tmp.name
+
+            loaded_docs = self._extract_pdf_documents(tmp_path)
+            title = Path(urlparse(url).path).name or url
+            crawl_timestamp = datetime.now().isoformat()
+            pdf_docs = []
+            for doc in loaded_docs:
+                text = self._clean_preserve_facts(doc.page_content)
+                if len(text) < 40:
+                    continue
+                doc.page_content = f"PDF: {title}\nSOURCE: {url}\n\n{text}"
+                doc.metadata.update({
+                    "source": url,
+                    "source_url": url,
+                    "url": url,
+                    "title": title,
+                    "page_title": title,
+                    "crawl_timestamp": crawl_timestamp,
+                    "crawled_at": crawl_timestamp,
+                    "content_type": "pdf",
+                    "source_type": "pdf",
+                    "section": self._infer_section(url),
+                })
+                pdf_docs.append(doc)
+            return pdf_docs
+        except Exception as e:
+            logger.warning(f"PDF ingest failed for {url}: {e}")
+            return []
+        finally:
+            if tmp_path and os.path.exists(tmp_path):
+                try:
+                    os.unlink(tmp_path)
+                except Exception:
+                    pass
+
+    def _extract_pdf_documents(self, pdf_path: str) -> List[Document]:
+        """Extract PDF pages with table rows before falling back to the standard PDF loader."""
+        docs: List[Document] = []
+        if pdfplumber is None:
+            return PyPDFLoader(pdf_path).load()
+        try:
+            with pdfplumber.open(pdf_path) as pdf:
+                for page_number, page in enumerate(pdf.pages, start=1):
+                    page_parts = []
+                    text = page.extract_text(x_tolerance=1, y_tolerance=3, layout=True) or ""
+                    if text.strip():
+                        page_parts.append(text)
+                    for table in page.extract_tables() or []:
+                        for row in table or []:
+                            cells = [self._clean_preserve_facts(str(cell or "")) for cell in row]
+                            cells = [cell for cell in cells if cell]
+                            if cells:
+                                page_parts.append(" | ".join(cells))
+                    page_text = self._clean_pdf_text("\n".join(page_parts))
+                    if page_text.strip():
+                        docs.append(Document(page_content=page_text, metadata={"page": page_number}))
+        except Exception as e:
+            logger.warning(f"pdfplumber extraction failed for {pdf_path}: {e}")
+
+        if docs:
+            return docs
+        return PyPDFLoader(pdf_path).load()
+
+    def _extract_content_legacy_unused(self, soup, url: str) -> str:
+        """Legacy extraction kept unused; _extract_content below is the active crawler parser."""
         import re
         parts = []
         title = soup.find("title")
@@ -1419,6 +1666,113 @@ class WebSyncEngine:
             parts.append("CONTENT:\n" + "\n".join(unique[:140]))
 
         return "\n\n".join(parts)
+
+
+    def _extract_content(self, soup, url: str) -> str:
+        """Extract readable website content while preserving compact factual lines."""
+        parts = []
+        title = soup.find("title")
+        if title:
+            t = re.sub(r"\s*[-–|]\s*Salim Habib University.*", "",
+                       title.get_text(" ", strip=True)).strip()
+            if t:
+                parts.append(f"PAGE: {t}")
+                parts.append(f"URL: {url}")
+
+        for tag in soup(["script", "style", "noscript", "iframe", "nav", "header", "footer", "form"]):
+            tag.decompose()
+
+        candidates = soup.select(
+            "main, article, .elementor, .elementor-widget-container, .entry-content, "
+            ".page-content, .site-content, .content, #content, .card, .wp-block-table"
+        )
+        containers = candidates if candidates else [soup.body or soup]
+        lines = []
+        seen_containers = set()
+
+        for container in containers:
+            if id(container) in seen_containers:
+                continue
+            seen_containers.add(id(container))
+            for el in container.find_all(
+                ["h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "td", "th", "tr", "dt", "dd", "span", "a"],
+                recursive=True
+            ):
+                text = self._clean_preserve_facts(el.get_text(" ", strip=True))
+                if not text:
+                    continue
+                name = el.name.lower()
+                if name in ("h1", "h2", "h3", "h4", "h5", "h6"):
+                    lines.append(f"HEADING: {text}")
+                elif name == "li":
+                    lines.append(f"- {text}")
+                elif name == "tr":
+                    cells = [self._clean_preserve_facts(c.get_text(" ", strip=True)) for c in el.find_all(["th", "td"])]
+                    cells = [c for c in cells if c]
+                    if cells:
+                        lines.append(" | ".join(cells))
+                elif name in ("td", "th") and el.find_parent("tr"):
+                    continue
+                else:
+                    lines.append(text)
+
+        seen, unique = set(), []
+        for l in lines:
+            key = l.lower()
+            if key not in seen and self._is_useful_line(l):
+                seen.add(key)
+                unique.append(l)
+        if unique:
+            parts.append("CONTENT:\n" + "\n".join(unique[:260]))
+
+        return "\n\n".join(parts)
+
+    def _clean_preserve_facts(self, text: str) -> str:
+        """Clean whitespace while keeping short numeric facts and contact details."""
+        return re.sub(r"\s+", " ", text or "").strip()
+
+    def _clean_pdf_text(self, text: str) -> str:
+        """Normalize PDF text without dropping numbers, bullets, floor facts, tables, or capacities."""
+        cleaned_lines = []
+        for raw in (text or "").splitlines():
+            line = self._clean_preserve_facts(raw)
+            if not line:
+                continue
+            line = re.sub(r"^[\u2022\u00b7\u25cf]\s*", "- ", line)
+            cleaned_lines.append(line)
+        return "\n".join(cleaned_lines)
+
+    def _is_useful_line(self, line: str) -> bool:
+        """Drop boilerplate without filtering out short factual values."""
+        if not line:
+            return False
+        lowered = line.lower()
+        boilerplate = {
+            "read more", "view more", "learn more", "home", "menu", "close",
+            "previous", "next", "submit", "search", "all rights reserved",
+        }
+        if lowered in boilerplate:
+            return False
+        if len(line) < 3:
+            return False
+        if "|" in line:
+            return True
+        if len(line) < 20:
+            return bool(re.search(
+                r"\d|@|floor|story|stories|lab|room|ext|opac|dean|foit|cs|study|discussion|research|digital|facility|facilities",
+                lowered
+            ))
+        return True
+
+    def _infer_section(self, url: str) -> str:
+        """Infer a broad section/category from the source URL."""
+        text = url.lower().replace("_", "-")
+        for keyword in self.PRIORITY_KEYWORDS:
+            normalized = keyword.lower().replace(" ", "-")
+            if normalized in text or keyword.lower() in text:
+                return keyword.lower()
+        path = urlparse(url).path.strip("/").split("/")
+        return path[0].lower() if path and path[0] else "home"
 
 
 # =========================
@@ -1960,14 +2314,15 @@ KNOWLEDGE SOURCES:
 RULES:
 1. Use the provided context to answer accurately.
 2. For room/lab questions, use exact room names from the timetable.
-3. If information is not in context, say so clearly and provide contact info.
+3. If information is not in context, say: "This was not found in the indexed SHU website data." Then provide contact info if useful.
 4. Always give complete answers when the context contains multiple names, items, teachers, rooms, or course mappings.
 5. Do not summarize a list down to only 2-3 entries when more relevant entries are available in context.
 6. For faculty, course, teacher, and timetable questions, list every relevant matching entry from the context.
 7. If an exact course-teacher mapping exists, answer it directly first, then add any useful section/context details.
 8. If context is partial, begin with "Based on available knowledge..." and then answer.
-9. Direct Fact entries are supporting context; do not let them override richer KB, website, or document context.
-10. Never invent facts not in the context.
+9. Prefer indexed SHU website pages and indexed SHU PDFs over uploaded documents and manual fallback facts.
+10. Include source title or URL when the answer uses SHU website/PDF context.
+11. Never invent facts not in the context.
 
 Question: {query}
 Answer:"""
@@ -2008,9 +2363,10 @@ RULES:
 5. For faculty, course, teacher, and timetable questions, list every relevant matching entry from the context.
 6. If an exact course-teacher mapping exists, answer it directly first, then add any useful section/context details.
 7. If context is partial, begin with "Based on available knowledge..." and then answer.
-8. Direct Fact entries are supporting context; do not let them override richer KB, website, or document context.
-9. If information is not in context, say so clearly.
-10. Never invent facts not in the context.
+8. Prefer indexed SHU website pages and indexed PDFs over fallback facts when both are present.
+9. If information is not in context, say: "This was not found in the indexed SHU website data."
+10. Include source title or URL when the answer uses SHU website/PDF context.
+11. Never invent facts not in the context.
 
 Question: {query}
 Answer:"""
@@ -2272,12 +2628,44 @@ class SHUChatbotApp:
         st.session_state["kb_vector_count"] = self._vector_count(st.session_state.get("kb_vs"))
         st.session_state["web_vector_count"] = self._vector_count(st.session_state.get("web_vs"))
         st.session_state["doc_vector_count"] = self._vector_count(st.session_state.get("doc_vs"))
+        st.session_state["web_total_chunks"] = st.session_state["web_vector_count"]
+        st.session_state["web_total_pdf_chunks"] = self._web_chunk_count_by_type("pdf")
+        st.session_state["top_indexed_library_urls"] = self._top_indexed_library_urls()
         st.session_state["kb_retriever_loaded"] = st.session_state.get("kb_retriever") is not None
         st.session_state["web_retriever_loaded"] = st.session_state.get("web_retriever") is not None
         st.session_state["doc_retriever_loaded"] = (
             st.session_state.get("retriever") is not None
             or st.session_state.get("doc_retriever") is not None
         )
+
+    def _web_chunk_count_by_type(self, source_type: str) -> int:
+        """Count website chunks by metadata source type for diagnostics."""
+        vs = st.session_state.get("web_vs")
+        if not vs:
+            return 0
+        try:
+            result = vs._collection.get(where={"source_type": source_type}, include=[])
+            return len(result.get("ids", []))
+        except Exception:
+            return 0
+
+    def _top_indexed_library_urls(self) -> List[str]:
+        """Return indexed SHU library URLs currently present in chroma_db_web."""
+        vs = st.session_state.get("web_vs")
+        if not vs:
+            return []
+        try:
+            result = vs._collection.get(include=["metadatas"], limit=5000)
+            urls = []
+            seen = set()
+            for meta in result.get("metadatas", []) or []:
+                url = (meta or {}).get("source_url") or (meta or {}).get("url") or (meta or {}).get("source")
+                if url and "library" in url.lower() and url not in seen:
+                    seen.add(url)
+                    urls.append(url)
+            return urls[:10]
+        except Exception:
+            return []
 
     def _log_knowledge_status(self):
         """Log retrieval status at startup/rerun for AWS troubleshooting."""
@@ -2336,9 +2724,14 @@ class SHUChatbotApp:
                 vs = Chroma(persist_directory=Config.CHROMA_WEB_DIR,
                            embedding_function=embeddings)
                 if vs._collection.count() > 0:
-                    st.session_state["web_retriever"] = vs.as_retriever(search_kwargs={"k": Config.RETRIEVER_K})
+                    st.session_state["web_retriever"] = vs.as_retriever(search_kwargs={"k": Config.WEB_RETRIEVER_K})
                     st.session_state["web_vs"] = vs
                     st.session_state["web_vector_count"] = self._vector_count(vs)
+                    st.session_state["web_chunks_created"] = st.session_state["web_vector_count"]
+                    st.session_state["web_total_chunks"] = st.session_state["web_vector_count"]
+                    st.session_state["web_total_pdf_chunks"] = self._web_chunk_count_by_type("pdf")
+                    st.session_state["web_pdf_chunks_indexed"] = st.session_state["web_total_pdf_chunks"]
+                    st.session_state["top_indexed_library_urls"] = self._top_indexed_library_urls()
                     st.session_state["web_indexed"] = True
         except Exception as e:
             logger.error(f"Web index load failed: {e}")
@@ -2396,22 +2789,7 @@ class SHUChatbotApp:
     def _get_combined_context(self, query: str) -> str:
         """Get combined context from all knowledge sources."""
         all_docs = []
-
-        # Direct fact lookup
-        direct = get_direct_shu_fact(query)
-        if direct:
-            all_docs.append(Document(
-                page_content=direct,
-                metadata={"source": "Direct Fact", "title": "SHU Fact"}
-            ))
-
-        # KB retrieval
-        if st.session_state.get("kb_retriever"):
-            try:
-                kb_docs = st.session_state["kb_retriever"].invoke(query)
-                all_docs.extend(kb_docs)
-            except Exception:
-                pass
+        retrieved_sources = []
 
         # Web retrieval
         if st.session_state.get("web_retriever"):
@@ -2438,6 +2816,25 @@ class SHUChatbotApp:
             except Exception as e:
                 logger.warning(f"Document retrieval failed: {e}")
 
+        # Timetable/manual KB retrieval remains available, but after indexed
+        # SHU website/PDF evidence so hardcoded facts do not lead the answer.
+        if st.session_state.get("kb_retriever"):
+            try:
+                kb_docs = st.session_state["kb_retriever"].invoke(query)
+                all_docs.extend(kb_docs)
+            except Exception:
+                pass
+
+        # Exact hardcoded facts are retained only as a fallback when no indexed
+        # website, PDF, timetable, or synced-document context is available.
+        if not all_docs:
+            direct = get_direct_shu_fact(query)
+            if direct:
+                all_docs.append(Document(
+                    page_content=direct,
+                    metadata={"source": "Direct Fact Fallback", "title": "SHU Fact Fallback"}
+                ))
+
         # Deduplicate
         seen, unique = set(), []
         for d in all_docs:
@@ -2450,9 +2847,26 @@ class SHUChatbotApp:
         parts = []
         for d in unique:
             m = d.metadata
-            loc = m.get("title", m.get("source", "Section"))
-            parts.append(f"[{loc}]:\n{d.page_content}")
+            loc = m.get("page_title") or m.get("title", m.get("source", "Section"))
+            url = m.get("source_url") or m.get("url") or m.get("source")
+            timestamp = m.get("crawled_at") or m.get("crawl_timestamp") or m.get("scraped_at") or m.get("uploaded_at")
+            source_type = m.get("source_type") or m.get("content_type") or m.get("file_type") or "unknown"
+            if url:
+                retrieved_sources.append({
+                    "title": str(loc),
+                    "url": str(url),
+                    "type": str(source_type),
+                })
+            source_bits = [str(loc)]
+            if url and url != loc:
+                source_bits.append(str(url))
+            if source_type:
+                source_bits.append(str(source_type))
+            if timestamp:
+                source_bits.append(f"indexed {timestamp}")
+            parts.append(f"[{' | '.join(source_bits)}]:\n{d.page_content}")
 
+        st.session_state["last_retrieved_sources"] = retrieved_sources[:12]
         return "\n\n---\n\n".join(parts)
 
 
@@ -2543,41 +2957,10 @@ Accreditations: HEC, PEC, PCP, NCEAC, Government of Sindh
 
 
 def get_direct_shu_fact(query: str) -> str:
-    """Exact-answer layer for common questions."""
+    """Fallback only for room floor mapping already present in the app."""
     import re
     q = query.lower()
     q = q.replace("deann", "dean").replace("deperment", "department")
-
-    course_teacher_map = {
-        "cloud computing": "Cloud Computing is taught by Gul Raeez Gulshan.",
-        "devops": "DevOps is taught by Razia Qamar.",
-        "database systems": "Database Systems is taught by Hassan Shahzad.",
-        "computer networks": "Computer Networks is taught by Dr. Sheeraz Arif.",
-        "machine learning": "Machine Learning is taught by Dr. Rizwan Qureshi.",
-        "deep learning": "Deep Learning is taught by Dr. Rizwan Qureshi.",
-        "digital logic design": "Digital Logic Design is taught by Dr. Ali Asghar.",
-        "compiler construction": "Compiler Construction is taught by Razia Qamar.",
-        "design & analysis of algorithms": "Design & Analysis of Algorithms is taught by Adnan Wahid.",
-        "design and analysis of algorithms": "Design & Analysis of Algorithms is taught by Adnan Wahid.",
-        "computer architecture": "Computer Architecture is taught by Adnan Wahid.",
-        "data structure": "Data Structure & Algorithm is taught by Saadia Karim.",
-        "computer organization": "Computer Organization & Assembly Language is taught by Saadia Karim.",
-        "assembly language": "Computer Organization & Assembly Language is taught by Saadia Karim.",
-        "final year projects": "Final Year Projects are taught/supervised by Saadia Karim.",
-        "programming fundamentals": "Programming Fundamentals is taught by Dr. Sheeraz Arif / AAiman Odho depending on section.",
-    }
-    if any(w in q for w in ["teach", "teaches", "teacher", "instructor", "faculty for", "who takes"]):
-        for course, answer in course_teacher_map.items():
-            if course in q:
-                return answer
-
-    if "dean" in q and any(w in q for w in ["cs", "computer science", "foit"]):
-        return ("Prof. Dr. Sheikh Muhammad Munaf is the Professor and Dean FOIT, "
-                "Faculty of Information Technology, Department of Computer Science.")
-
-    if any(w in q for w in ["incharge", "in charge", "hod"]) and any(w in q for w in ["cs", "computer"]):
-        return ("Mr. Syed Zahid Badshah is the Professor of Practice and Incharge, "
-                "Department of Computer Science.")
 
     room_match = re.search(r"\b(\d{3})\b", q)
     if room_match and any(w in q for w in ["where", "floor", "location", "room", "class"]):
@@ -3288,6 +3671,10 @@ def main():
         "kb_vector_count": 0, "web_vector_count": 0, "doc_vector_count": 0,
         "kb_retriever_loaded": False, "web_retriever_loaded": False,
         "doc_retriever_loaded": False, "doc_retriever": None, "doc_vs": None,
+        "web_pages_crawled": 0, "web_chunks_created": 0, "web_pdfs_found": 0,
+        "web_pdf_chunks_indexed": 0, "web_last_crawl_time": "",
+        "web_total_chunks": 0, "web_total_pdf_chunks": 0,
+        "top_indexed_library_urls": [], "last_retrieved_sources": [],
     }
     for k, v in session_defaults.items():
         if k not in st.session_state:
@@ -3386,6 +3773,30 @@ def main():
             st.caption(f"KB retriever loaded: {st.session_state.get('kb_retriever_loaded', False)}")
             st.caption(f"Web retriever loaded: {st.session_state.get('web_retriever_loaded', False)}")
             st.caption(f"Document retriever loaded: {st.session_state.get('doc_retriever_loaded', False)}")
+            st.caption(f"Total crawled HTML pages: {st.session_state.get('web_pages_crawled', 0)}")
+            st.caption(f"Total PDFs found: {st.session_state.get('web_pdfs_found', 0)}")
+            st.caption(f"Total PDF chunks indexed: {st.session_state.get('web_pdf_chunks_indexed', 0)}")
+            st.caption(f"Total website chunks indexed: {st.session_state.get('web_total_chunks', st.session_state.get('web_chunks_created', 0))}")
+            st.caption(f"Total PDF chunks: {st.session_state.get('web_total_pdf_chunks', 0)}")
+            st.caption(f"chroma_db_web collection count: {st.session_state.get('web_vector_count', 0)}")
+            st.caption(f"Last crawl time: {st.session_state.get('web_last_crawl_time') or 'Not run this session'}")
+            library_urls = st.session_state.get("top_indexed_library_urls", [])
+            if library_urls:
+                st.markdown("Top indexed library URLs:")
+                for url in library_urls[:8]:
+                    st.caption(url)
+            sources = st.session_state.get("last_retrieved_sources", [])
+            if sources:
+                st.markdown("Top retrieved sources:")
+                for src in sources[:8]:
+                    st.caption(f"{src.get('type', 'source')}: {src.get('title', '')} | {src.get('url', '')}")
+
+        st.caption(
+            "Crawl stats: "
+            f"{st.session_state.get('web_pages_crawled', 0)} pages, "
+            f"{st.session_state.get('web_chunks_created', 0)} chunks, "
+            f"{st.session_state.get('web_pdfs_found', 0)} PDFs"
+        )
 
         st.markdown("---")
 
@@ -3457,15 +3868,18 @@ def main():
 
         # Web crawl button
         st.markdown("---")
-        if not st.session_state.get("web_indexed"):
+        if False and not st.session_state.get("web_indexed"):
             if st.button("🌐 Crawl shu.edu.pk", use_container_width=True):
                 progress_bar = st.progress(0)
                 status_text = st.empty()
 
-                def progress_cb(current, total, docs_count):
+                def progress_cb(current, total, docs_count, pdfs_found=0):
                     """Update the Streamlit progress bar while website crawling runs."""
                     progress_bar.progress(min(int(current / total * 100), 99))
-                    status_text.text(f"Crawling... {current}/{total} | {docs_count} pages")
+                    status_text.text(
+                        f"Crawling... {current}/{total} pages | "
+                        f"{docs_count} documents | {pdfs_found} PDFs"
+                    )
 
                 result = app.web_sync.full_sync(progress_callback=progress_cb)
                 if result["status"] == "success":
@@ -3474,9 +3888,62 @@ def main():
                     st.session_state["web_vector_count"] = app._vector_count(result["vector_store"])
                     st.session_state["web_retriever_loaded"] = True
                     st.session_state["web_indexed"] = True
+                    st.session_state["web_pages_crawled"] = result.get("pages_scraped", 0)
+                    st.session_state["web_chunks_created"] = result.get("chunks_created", 0)
+                    st.session_state["web_pdfs_found"] = result.get("pdfs_found", 0)
                     progress_bar.progress(100)
-                    st.success(f"✅ {result['pages_scraped']} pages indexed!")
+                    st.success(
+                        f"✅ {result['pages_scraped']} pages crawled, "
+                        f"{result.get('documents_indexed', result['pages_scraped'])} documents indexed, "
+                        f"{result.get('chunks_created', 0)} chunks, "
+                        f"{result.get('pdfs_found', 0)} PDFs found."
+                    )
                     st.rerun()
+
+        def run_website_crawl(refresh_web_db: bool):
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+
+            def progress_cb(current, total, docs_count, pdfs_found=0):
+                """Update the Streamlit progress bar while website crawling runs."""
+                progress_bar.progress(min(int(current / total * 100), 99))
+                status_text.text(
+                    f"Crawling... {current}/{total} pages | "
+                    f"{docs_count} documents | {pdfs_found} PDFs"
+                )
+
+            result = app.web_sync.full_sync(progress_callback=progress_cb, refresh=refresh_web_db)
+            if result["status"] == "success":
+                st.session_state["web_retriever"] = result["retriever"]
+                st.session_state["web_vs"] = result["vector_store"]
+                st.session_state["web_vector_count"] = app._vector_count(result["vector_store"])
+                st.session_state["web_retriever_loaded"] = True
+                st.session_state["web_indexed"] = True
+                st.session_state["web_pages_crawled"] = result.get("pages_scraped", 0)
+                st.session_state["web_chunks_created"] = result.get("chunks_created", 0)
+                st.session_state["web_total_chunks"] = app._vector_count(result["vector_store"])
+                st.session_state["web_pdfs_found"] = result.get("pdfs_found", 0)
+                st.session_state["web_pdf_chunks_indexed"] = result.get("pdf_chunks_indexed", 0)
+                st.session_state["web_total_pdf_chunks"] = app._web_chunk_count_by_type("pdf")
+                st.session_state["top_indexed_library_urls"] = app._top_indexed_library_urls()
+                st.session_state["web_last_crawl_time"] = result.get("timestamp", "")
+                progress_bar.progress(100)
+                st.success(
+                    f"{result['pages_scraped']} pages crawled, "
+                    f"{result.get('documents_indexed', result['pages_scraped'])} documents indexed, "
+                    f"{result.get('chunks_created', 0)} chunks, "
+                    f"{result.get('pdfs_found', 0)} PDFs found, "
+                    f"{result.get('pdf_chunks_indexed', 0)} PDF chunks."
+                )
+                st.rerun()
+            else:
+                st.error(result.get("error", "Website crawl failed."))
+
+        if st.button("Crawl shu.edu.pk", use_container_width=True):
+            run_website_crawl(refresh_web_db=False)
+
+        if st.button("Refresh Website Knowledge", use_container_width=True):
+            run_website_crawl(refresh_web_db=True)
 
         # Clear chat
         if st.button("🗑️ Clear Chat", use_container_width=True):
@@ -3599,6 +4066,14 @@ def _render_chat_page(app: SHUChatbotApp):
             # Show routing badge
             dept = routing.get('department', 'General')
             st.caption(f"GPT-4o · Routed: {dept} · {datetime.now().strftime('%H:%M:%S')}")
+
+            sources = st.session_state.get("last_retrieved_sources", [])
+            if sources:
+                source_text = " | ".join(
+                    f"{s.get('title', 'Source')}: {s.get('url', '')}"
+                    for s in sources[:3]
+                )
+                st.caption(f"Sources: {source_text}")
 
         # Save response
         app.chat_history.add_message(

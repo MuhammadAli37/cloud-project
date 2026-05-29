@@ -396,3 +396,375 @@
 2026-05-24 19:35:39,865 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
 2026-05-24 19:35:39,870 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 2026 vectors, loaded=True | Documents: 11 vectors, loaded=True
 2026-05-24 19:35:50,126 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:37:41,895 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:37:47,568 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:37:47,578 - SHU_Chatbot - INFO - Automation scheduler started
+2026-05-28 16:37:50,834 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 2026 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 16:38:00,214 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:38:03,694 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:38:03,700 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 2026 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 16:38:07,004 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 16:38:07,422 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 16:38:07,799 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 16:38:07,815 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 16:38:09,152 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 16:38:10,805 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:38:15,367 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:38:15,377 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 2026 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 16:38:17,137 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:38:22,258 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:38:22,264 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 2026 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 16:38:28,040 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:38:29,524 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:38:33,556 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:38:35,589 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:38:35,597 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 2026 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 16:38:35,641 - SHU_Chatbot - INFO - Executing task: Website Data Synchronization
+2026-05-28 16:38:35,641 - SHU_Chatbot - INFO - Starting full website synchronization...
+2026-05-28 16:38:47,571 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:39:47,606 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:40:47,617 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:41:47,616 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:42:47,615 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:43:47,633 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:44:47,652 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:45:47,689 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:46:47,733 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:47:47,965 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:48:47,997 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:48:53,894 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 16:48:58,557 - SHU_Chatbot - INFO - Sync complete: 150 pages, 996 chunks in 622.9s
+2026-05-28 16:48:58,573 - SHU_Chatbot - ERROR - Error saving analytics: Object of type VectorStoreRetriever is not JSON serializable
+2026-05-28 16:49:48,006 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:50:48,106 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:51:48,142 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:52:48,175 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 16:52:48,486 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:52:55,192 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:52:55,207 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 16:53:08,009 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:53:16,445 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:53:16,472 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 16:53:17,318 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 16:53:18,217 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 16:53:18,723 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 16:53:18,731 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 16:53:20,283 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 16:53:21,744 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 16:53:31,011 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 16:53:31,026 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 16:53:48,185 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 17:37:58,697 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 17:38:03,308 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 17:38:03,311 - SHU_Chatbot - INFO - Automation scheduler started
+2026-05-28 17:38:06,213 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 17:38:12,597 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 17:38:16,003 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 17:38:16,009 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 17:38:20,378 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 17:38:23,672 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 17:38:23,678 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 17:38:23,720 - SHU_Chatbot - INFO - Executing task: Website Data Synchronization
+2026-05-28 17:38:23,720 - SHU_Chatbot - INFO - Starting full website synchronization...
+2026-05-28 17:39:03,309 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 17:40:03,344 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 17:40:06,777 - openai._base_client - INFO - Retrying request to /embeddings in 0.432473 seconds
+2026-05-28 17:40:07,226 - openai._base_client - INFO - Retrying request to /embeddings in 0.814248 seconds
+2026-05-28 17:40:08,051 - SHU_Chatbot - ERROR - Task website_sync failed: Connection error.
+2026-05-28 17:40:14,278 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 17:40:19,066 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 17:40:19,071 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 17:40:28,881 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 17:40:32,797 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 17:40:32,802 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 17:40:34,870 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 17:40:35,693 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 17:40:35,723 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 17:40:36,101 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 17:40:38,354 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 17:40:40,380 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 17:40:44,436 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 17:40:44,441 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 17:41:03,383 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 17:41:03,641 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 17:41:07,724 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 17:41:07,729 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 17:41:08,149 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 17:41:08,551 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 17:41:08,564 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 17:41:08,946 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 17:41:11,117 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 17:41:13,139 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 17:41:18,928 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 17:41:18,941 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 17:42:03,412 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 17:43:03,477 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 17:44:03,482 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:02:41,826 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:03:11,848 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:03:48,195 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:06:15,478 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:08:03,444 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:08:08,485 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:08:08,488 - SHU_Chatbot - INFO - Automation scheduler started
+2026-05-28 18:08:10,541 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:08:31,926 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:08:35,551 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:08:35,557 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:08:47,920 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:08:51,395 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:08:51,402 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:08:51,436 - SHU_Chatbot - INFO - Executing task: Website Data Synchronization
+2026-05-28 18:08:51,437 - SHU_Chatbot - INFO - Starting full website synchronization...
+2026-05-28 18:09:08,488 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:10:08,521 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:11:08,550 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:12:08,584 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:13:08,660 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:14:08,921 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:15:08,955 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:16:08,995 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:17:09,035 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:18:09,071 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:19:09,102 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:19:12,643 - SHU_Chatbot - WARNING - PDF ingest failed for https://shu.edu.pk/wp-content/uploads/phd-sample-test-cs.pdf: HTTPSConnectionPool(host='shu.edu.pk', port=443): Max retries exceeded with url: /wp-content/uploads/phd-sample-test-cs.pdf (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000227D9CA4CD0>: Failed to resolve 'shu.edu.pk' ([Errno 11001] getaddrinfo failed)"))
+2026-05-28 18:19:13,160 - SHU_Chatbot - WARNING - PDF ingest failed for https://shu.edu.pk/wp-content/uploads/sample-test-paper.pdf: HTTPSConnectionPool(host='shu.edu.pk', port=443): Max retries exceeded with url: /wp-content/uploads/sample-test-paper.pdf (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000227D9CA51D0>: Failed to resolve 'shu.edu.pk' ([Errno 11001] getaddrinfo failed)"))
+2026-05-28 18:19:14,556 - openai._base_client - INFO - Retrying request to /embeddings in 0.473242 seconds
+2026-05-28 18:19:15,051 - openai._base_client - INFO - Retrying request to /embeddings in 0.815006 seconds
+2026-05-28 18:19:15,911 - SHU_Chatbot - ERROR - Task website_sync failed: Connection error.
+2026-05-28 18:20:09,134 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:21:09,162 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:22:09,191 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:23:09,221 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:24:09,227 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:25:09,255 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:26:09,287 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:27:09,314 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:28:09,343 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:29:09,373 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:30:09,403 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:31:09,435 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:32:09,464 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:33:09,493 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:34:09,520 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:35:09,549 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:36:09,577 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:37:09,635 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:37:46,794 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:37:50,879 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:37:50,895 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:37:54,973 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:37:58,962 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:37:58,969 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:37:59,100 - openai._base_client - INFO - Retrying request to /embeddings in 0.429676 seconds
+2026-05-28 18:37:59,533 - openai._base_client - INFO - Retrying request to /embeddings in 0.893366 seconds
+2026-05-28 18:38:00,438 - openai._base_client - INFO - Retrying request to /embeddings in 0.473872 seconds
+2026-05-28 18:38:00,916 - openai._base_client - INFO - Retrying request to /embeddings in 0.759568 seconds
+2026-05-28 18:38:01,683 - SHU_Chatbot - WARNING - Document retrieval failed: Connection error.
+2026-05-28 18:38:01,690 - openai._base_client - INFO - Retrying request to /embeddings in 0.398423 seconds
+2026-05-28 18:38:02,090 - openai._base_client - INFO - Retrying request to /embeddings in 0.820542 seconds
+2026-05-28 18:38:03,002 - openai._base_client - INFO - Retrying request to /chat/completions in 0.434208 seconds
+2026-05-28 18:38:03,439 - openai._base_client - INFO - Retrying request to /chat/completions in 0.981592 seconds
+2026-05-28 18:38:09,654 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:39:00,368 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:39:03,952 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:39:03,955 - SHU_Chatbot - INFO - Automation scheduler started
+2026-05-28 18:39:05,633 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:39:09,679 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:39:27,646 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:39:32,260 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:39:32,265 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:39:34,124 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 18:39:34,919 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 18:39:34,955 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 18:39:35,389 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 18:39:37,361 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 18:39:38,657 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:39:42,775 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:39:42,781 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:40:02,313 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:40:03,958 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:40:07,178 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:40:07,185 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:40:09,686 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:40:10,221 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:40:14,261 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:40:14,269 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:40:17,403 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:40:20,962 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:40:20,967 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 18:40:21,003 - SHU_Chatbot - INFO - Executing task: Website Data Synchronization
+2026-05-28 18:40:21,007 - SHU_Chatbot - INFO - Starting full website synchronization...
+2026-05-28 18:41:04,013 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:41:09,696 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:42:04,068 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:42:09,711 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:43:04,109 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:43:09,718 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:44:04,156 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:44:09,761 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:45:04,172 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:45:09,769 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:46:04,192 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:46:10,119 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:47:04,200 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:47:10,285 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:48:04,208 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:48:10,292 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:49:04,215 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:49:10,302 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:50:04,225 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:50:10,311 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:51:04,235 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:51:10,340 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:52:04,292 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:52:10,360 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:53:04,382 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:53:10,380 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:54:04,480 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:54:10,397 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:55:04,498 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:55:10,511 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 18:58:44,392 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 18:58:50,023 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 18:58:50,074 - SHU_Chatbot - INFO - Automation scheduler started
+2026-05-28 18:58:52,390 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 19:08:31,919 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 19:09:02,158 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 19:09:35,231 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 19:10:15,187 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 19:10:16,798 - SHU_Chatbot - INFO - Crawl finished: pages crawled=3, PDFs indexed=1, documents=4, URLs indexed=4
+2026-05-28 19:13:21,349 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 19:13:45,599 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 19:13:47,207 - SHU_Chatbot - INFO - Crawl finished: pages crawled=3, PDFs indexed=1, documents=4, URLs indexed=4
+2026-05-28 21:41:06,882 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 21:41:12,567 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 21:41:12,571 - SHU_Chatbot - INFO - Automation scheduler started
+2026-05-28 21:41:16,067 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 21:41:25,066 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 21:41:28,861 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 21:41:28,979 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 21:41:37,073 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 21:41:40,417 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 21:41:40,494 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 3022 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 21:41:40,536 - SHU_Chatbot - INFO - Executing task: Website Data Synchronization
+2026-05-28 21:41:40,537 - SHU_Chatbot - INFO - Starting full website synchronization...
+2026-05-28 21:42:12,572 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:43:12,623 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:44:12,631 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:45:12,687 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:46:12,773 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:47:12,850 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:48:12,909 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:49:12,967 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:50:13,010 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:51:13,036 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:52:13,084 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:53:13,136 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:54:13,201 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:55:13,471 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:56:13,534 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:57:13,766 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:58:13,796 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 21:59:13,853 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:00:13,926 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:01:13,985 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:02:14,025 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:03:14,126 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:04:14,151 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:05:14,187 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:06:14,260 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:07:14,320 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:08:14,389 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:09:14,448 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:10:14,475 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:11:14,792 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:12:14,807 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:13:14,865 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:14:14,942 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:15:14,967 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:16:14,994 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:17:15,057 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:18:15,122 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:19:15,175 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:19:54,914 - SHU_Chatbot - INFO - Crawl finished: pages crawled=500, PDFs indexed=3, documents=647, URLs indexed=503
+2026-05-28 22:19:58,843 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:20:03,500 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:20:09,473 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:20:18,256 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:20:18,320 - SHU_Chatbot - INFO - Sync complete: 500 pages crawled, 647 documents, 2881 chunks indexed, 3 PDFs indexed, 482 PDF chunks, 503 URLs indexed in 2317.8s
+2026-05-28 22:20:18,320 - SHU_Chatbot - INFO - Website URLs indexed: ['https://shu.edu.pk/', 'https://shu.edu.pk/Faculty-of-Engineering', 'https://shu.edu.pk/Faculty-of-Information-Technology', 'https://shu.edu.pk/Faculty-of-Management-Science', 'https://shu.edu.pk/Faculty-of-Pharmacy', 'https://shu.edu.pk/Faculty-of-Science', 'https://shu.edu.pk/FoEngr/be-bme', 'https://shu.edu.pk/FoEngr/biocomputing-and-artificial-intelligence', 'https://shu.edu.pk/FoEngr/bmet', 'https://shu.edu.pk/FoEngr/bs-cns', 'https://shu.edu.pk/FoEngr/bs-ris', 'https://shu.edu.pk/FoEngr/bs-ris/b-e-technology-biomedical', 'https://shu.edu.pk/FoEngr/bs-ris/biocomputing-and-artificial-intelligence', 'https://shu.edu.pk/FoEngr/bs-ris/bs-computer-networks-and-security-cns', 'https://shu.edu.pk/FoEngr/me-biomedical-engineering', 'https://shu.edu.pk/FoEngr/ph-d-biomedical-engineering', 'https://shu.edu.pk/FoEngr/robotics-and-intelligent-systems', 'https://shu.edu.pk/FoIT/associate-degree-in-computer-science-adp-cs', 'https://shu.edu.pk/FoIT/associate-degree-in-software-engineering-adp-se', 'https://shu.edu.pk/FoIT/bs-artificial-intelligence', 'https://shu.edu.pk/FoIT/bs-artificial-intelligence-technology', 'https://shu.edu.pk/FoIT/bs-computer-science', 'https://shu.edu.pk/FoIT/bs-cybersecurity-technology', 'https://shu.edu.pk/FoIT/bs-data-science-technology', 'https://shu.edu.pk/FoIT/bs-software-engineering', 'https://shu.edu.pk/FoIT/bs-software-engineering-technology', 'https://shu.edu.pk/FoIT/bscyber-security', 'https://shu.edu.pk/FoIT/ms-computer-science', 'https://shu.edu.pk/FoIT/ph-d-computer-science', 'https://shu.edu.pk/FoMS/ade-content-creation-for-digtial-media-2-years', 'https://shu.edu.pk/FoMS/associate-degree-ade-sports-fitness', 'https://shu.edu.pk/FoMS/associate-degree-in-ai-digital-arts-creative-design', 'https://shu.edu.pk/FoMS/associate-degree-in-digital-marketing', 'https://shu.edu.pk/FoMS/associate-degree-in-freelancing-digital-entrepreneurship', 'https://shu.edu.pk/FoMS/associate-degree-in-tv-film-production', 'https://shu.edu.pk/FoMS/bachelor-of-business-administration', 'https://shu.edu.pk/FoMS/bachelors-in-fine-arts', 'https://shu.edu.pk/FoMS/bs-accounting-finance', 'https://shu.edu.pk/FoMS/bs-ai-digital-arts-creative-design-bridge-program', 'https://shu.edu.pk/FoMS/bs-business-analytics', 'https://shu.edu.pk/FoMS/bs-content-development-virality', 'https://shu.edu.pk/FoMS/bs-digital-arts-creative-design', 'https://shu.edu.pk/FoMS/bs-economics-with-ai-data-science', 'https://shu.edu.pk/FoMS/bs-fintech', 'https://shu.edu.pk/FoMS/bs-in-tv-film-production', 'https://shu.edu.pk/FoMS/bs-psychology', 'https://shu.edu.pk/FoMS/bs-sports-fitness', 'https://shu.edu.pk/FoMS/bs-supply-chain-management', 'https://shu.edu.pk/FoMS/certification-in-ai-digital-arts-and-creative-design-4-months', 'https://shu.edu.pk/FoMS/certification-in-sports-fitness-4-months', 'https://shu.edu.pk/FoMS/diploma-program-in-sports-fitness-1-year', 'https://shu.edu.pk/FoMS/diploma-programs-in-ai-digital-art-and-creative-design-1-year', 'https://shu.edu.pk/FoMS/master-of-business-administration', 'https://shu.edu.pk/FoMS/ms-ai-digital-arts-creative-design', 'https://shu.edu.pk/FoMS/ms-management-science', 'https://shu.edu.pk/FoMS/ph-d-management-sciences', 'https://shu.edu.pk/FoMS/post-graduate-diploma-in-media-arts', 'https://shu.edu.pk/FoMS/postgraduate-diploma-in-sports-fitness', 'https://shu.edu.pk/FoMS/postgraduate-diploma-in-tv-film-production', 'https://shu.edu.pk/FoPharm/doctor-of-pharmacy-pharm-d-program', 'https://shu.edu.pk/FoPharm/doctor-of-philosophy-ph-d-program-in-pharmacology', 'https://shu.edu.pk/FoPharm/master-of-philosophy-m-phil-program-in-pharmacology', 'https://shu.edu.pk/FoSci/associate-degree-in-agritech', 'https://shu.edu.pk/FoSci/associate-degree-in-biotechnology', 'https://shu.edu.pk/FoSci/associate-degree-in-food-science-technology', 'https://shu.edu.pk/FoSci/bs-biosciences', 'https://shu.edu.pk/FoSci/bs-biotechnology', 'https://shu.edu.pk/FoSci/bs-food-science-technology', 'https://shu.edu.pk/FoSci/bs-human-nutrition-dietetics', 'https://shu.edu.pk/FoSci/m-phil-biosciences', 'https://shu.edu.pk/FoSci/ph-d-biosciences', 'https://shu.edu.pk/about-us', 'https://shu.edu.pk/achievement/department-of-biomedical-engineering-secures-erasmus-project-biomed-5-0', 'https://shu.edu.pk/achievement/faculty-members-elevated-to-senior-ieee-members', 'https://shu.edu.pk/achievement/research-publication', 'https://shu.edu.pk/achievement/shu-students-win-second-prize-at-aku-conference-for-parkinsons-research', 'https://shu.edu.pk/admission', 'https://shu.edu.pk/admission/admission-process', 'https://shu.edu.pk/admission/scholarships-financial-aid', 'https://shu.edu.pk/admission/tution']
+2026-05-28 22:20:18,321 - SHU_Chatbot - INFO - Website PDFs indexed: ['https://shu.edu.pk/wp-content/uploads/2025/01/Student-Handbook.pdf', 'https://shu.edu.pk/wp-content/uploads/prospectus.pdf', 'https://shu.edu.pk/wp-content/uploads/shu-digital-library-guide-updated.pdf']
+2026-05-28 22:20:18,346 - SHU_Chatbot - ERROR - Error saving analytics: Object of type VectorStoreRetriever is not JSON serializable
+2026-05-28 22:20:23,471 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:20:27,341 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:20:27,673 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:21:18,344 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:21:20,959 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:21:25,923 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:21:26,187 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:21:27,419 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:21:27,845 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:21:27,859 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 22:21:28,860 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:21:32,343 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 22:21:33,054 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:21:37,589 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:21:37,956 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:21:39,446 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:21:43,551 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:21:44,003 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:21:44,477 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:21:44,888 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:21:44,898 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 22:21:45,285 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:21:47,300 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 22:21:51,854 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:21:57,278 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:21:57,648 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:22:12,505 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:22:16,250 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:22:16,479 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:22:16,940 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:17,441 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:17,450 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 22:22:17,802 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:18,368 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:22:19,458 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 22:22:23,987 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:22:27,724 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:22:27,965 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:22:34,003 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:22:37,544 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:22:37,769 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:22:38,335 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:38,770 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:38,783 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 22:22:39,144 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:40,508 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 22:22:41,365 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:22:46,890 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:22:47,186 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:22:50,360 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:22:54,608 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:22:54,850 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:22:55,379 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:55,784 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:55,793 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 22:22:56,190 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:22:57,252 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 22:23:00,446 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:23:04,891 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:23:05,205 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:23:18,388 - SHU_Chatbot - INFO - Executing task: Incoming PDF Folder Watcher
+2026-05-28 22:23:31,583 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:23:35,667 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:23:35,891 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True
+2026-05-28 22:23:36,642 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:23:37,053 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:23:37,061 - SHU_Chatbot - WARNING - Document retrieval failed: Collection expecting embedding with dimension of 3072, got 1536
+2026-05-28 22:23:37,395 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2026-05-28 22:23:38,749 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-28 22:23:39,420 - SHU_Chatbot - INFO - Startup admin credential debug: loaded=True (username_configured=True, password_configured=True, local_dev_fallback_allowed=True)
+2026-05-28 22:23:44,366 - SHU_Chatbot - WARNING - AWS credentials not found. Bedrock disabled.
+2026-05-28 22:23:44,597 - SHU_Chatbot - INFO - Knowledge status | KB: 53 vectors, loaded=True | Web: 5903 vectors, loaded=True | Documents: 11 vectors, loaded=True

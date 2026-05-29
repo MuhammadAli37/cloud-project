@@ -498,5 +498,202 @@
     "resolved": false,
     "satisfaction_score": null,
     "metadata": {}
+  },
+  "25c623a247e88b8c": {
+    "student_id": null,
+    "started_at": "2026-05-28T16:37:50.836180",
+    "messages": [
+      {
+        "role": "user",
+        "content": "how many floors of libary",
+        "timestamp": "2026-05-28T16:38:07.882014",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "I'm sorry, but the specific number of floors in the library at Salim Habib University is not mentioned in the provided context. If you need more detailed information, I recommend contacting the library directly at [email protected] or calling their information desk at (021)-111-248-338 Ext.311.",
+        "timestamp": "2026-05-28T16:38:10.302017",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "how many floors of libary",
+        "timestamp": "2026-05-28T16:53:18.754686",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "I'm sorry, but the specific number of floors in the library at Salim Habib University is not mentioned in the provided context. If you need more detailed information, I recommend contacting the library directly at [email protected] or by calling (021)-111-248-338 Ext.311 for assistance.",
+        "timestamp": "2026-05-28T16:53:20.823433",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "fb6195d3c7a47f9d": {
+    "student_id": null,
+    "started_at": "2026-05-28T17:38:06.213594",
+    "messages": [
+      {
+        "role": "user",
+        "content": "floors of libaray",
+        "timestamp": "2026-05-28T17:40:36.241561",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The library at Salim Habib University, known as the Tariq Amin Library, is organized into different floors, each serving specific purposes. However, the specific details about the number of floors and their individual functions are not provided in the available context. For more detailed information, you might want to contact the library directly at (021)-111-248-338 Ext.311 or visit their website for a collection floor guide.",
+        "timestamp": "2026-05-28T17:40:40.031313",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "how many floors of libaray",
+        "timestamp": "2026-05-28T17:41:09.015883",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The specific details about the number of floors in the Tariq Amin Library at Salim Habib University are not provided in the available context. For more accurate information, you might want to contact the library directly at (021)-111-248-338 Ext.311 or visit their website for further assistance.",
+        "timestamp": "2026-05-28T17:41:12.588310",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "47f2937b7df4cbd5": {
+    "student_id": null,
+    "started_at": "2026-05-28T18:08:10.542817",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How many floors does Tariq Amin Library have?",
+        "timestamp": "2026-05-28T18:38:02.969990",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "074eacf4cc957ea2": {
+    "student_id": null,
+    "started_at": "2026-05-28T18:39:05.633421",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How many floors does Tariq Amin Library have?",
+        "timestamp": "2026-05-28T18:39:35.480533",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "This information was not found in the indexed SHU website data. For specific details about the Tariq Amin Library, you might consider contacting the library directly at (021)-111-248-338 Ext.311 or visiting their website for more information.",
+        "timestamp": "2026-05-28T18:39:38.212490",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "765c769c8169d443": {
+    "student_id": null,
+    "started_at": "2026-05-28T18:58:52.396586",
+    "messages": [],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
+  },
+  "9867ec638f391691": {
+    "student_id": null,
+    "started_at": "2026-05-28T21:41:16.067848",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How many floors does Tariq Amin Library have?",
+        "timestamp": "2026-05-28T22:21:28.969541",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The Tariq Amin Library at Salim Habib University has four floors.",
+        "timestamp": "2026-05-28T22:21:32.646054",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "What facilities are available in SHU library?",
+        "timestamp": "2026-05-28T22:21:45.407459",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The Tariq Amin Library at Salim Habib University offers a variety of facilities to support students' academic and research needs. Here are some of the key facilities available:\n\n1. **Physical and Digital Collections**: The library houses over 15,000 physical volumes, primarily curriculum books, and 25,000 digital volumes. It also provides access to numerous international journals with notable impact factors.\n\n2. **Online System**: Students can check the availability of books and reserve them online without needing to visit the library physically.\n\n3. **E-Resources and Peripherals**: The library offers e-terminals, an in-house e-repository, Wi-Fi access, and services like xeroxing, scanning, and printing.\n\n4. **Seating and Study Areas**: The library has a seating capacity for 300 users, 12 research cubicles with computer workstations, and a discussion hall on the 3rd floor. The 4th floor is available for presentations or sessions.\n\n5. **Technology and Device Lending**: Tablets are available for reading, research, and academic work.\n\n6. **Library Services**: These include an Integrated Library System (ILS), RFID + EM System, book bank facilities, circulation service, computerized information services, current awareness services, readers' advisory service, and reference service.\n\n7. **Collaborative Learning Spaces**: The 4th floor is dedicated to collaborative learning.\n\n8. **Digital Library Access**: Students and faculty can access e-books and other digital resources on their devices within the campus.\n\nThese facilities are designed to enhance learning and research, making the library a central knowledge repository at SHU.",
+        "timestamp": "2026-05-28T22:21:51.268219",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "What research facilities does SHU provide?",
+        "timestamp": "2026-05-28T22:22:17.868171",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Salim Habib University (SHU) provides a range of research facilities to support students and faculty in their academic pursuits. Here are some of the key research facilities available at SHU:\n\n1. **State-of-the-Art Laboratories**: SHU has over 40 laboratories designed to provide hands-on learning and research opportunities across various disciplines. These labs are equipped with advanced apparatus and instruments to facilitate cutting-edge research.\n\n2. **ICT Labs**: These include a General Purpose Computer Lab, Project Lab, and Software Development Lab, supporting research in information and communication technology.\n\n3. **Engineering Labs**: Multiple labs such as Engineering I, II, and III are available for engineering research and projects.\n\n4. **Wet Labs**: These include specialized labs for Biochemistry, Bioscience, Microbiology, Physiology, Pharmacology, Pharmaceutical Chemistry, Pharmaceutics, Pharmacognosy, Histology, and Industrial Lab, supporting research in life sciences and pharmaceuticals.\n\n5. **Dry Labs**: Facilities like the Anatomy Lab, OSPE Lab, and Skills and Simulation Lab are available for research in medical and health sciences.\n\n6. **Sanako-Language Lab**: This lab supports research in language and communication studies.\n\n7. **Securities Trading Lab**: This facility is designed for research in finance and trading.\n\n8. **Library Resources**: The Tariq Amin Library offers access to over 15,000 physical volumes and 25,000 digital volumes, along with international journals, supporting research across various fields.\n\nThese facilities are designed to foster a robust research environment, enabling students and faculty to engage in innovative and impactful research projects.",
+        "timestamp": "2026-05-28T22:22:23.578606",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "Who teaches quantum dragon engineering?",
+        "timestamp": "2026-05-28T22:22:39.236716",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "This was not found in the indexed SHU website data.",
+        "timestamp": "2026-05-28T22:22:40.823229",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "What is the admission process at SHU?",
+        "timestamp": "2026-05-28T22:22:56.283116",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "The admission process at Salim Habib University (SHU) is merit-based and designed to select students of the highest caliber. Here are the key steps involved in the admission process:\n\n1. **Online Application**: Candidates must apply online and register to appear in the SHU Aptitude Test.\n\n2. **Application Fee**: Download the APC voucher and pay the application fee to the designated bank or make a Pay Order/Demand Draft in the name of \"Salim Habib University.\"\n\n3. **Aptitude Test**: Appear for the SHU Aptitude Test, which is a requirement for admission.\n\n4. **Interview**: Candidates must appear for an interview before two faculty members.\n\nThe process is selective but does not discriminate based on gender, faith, race, ethnicity, or nationality. Candidates are selected purely based on their capabilities.\n\nFor more detailed information, you can visit the [SHU Admission Process page](https://shu.edu.pk/admission/admission-process/).",
+        "timestamp": "2026-05-28T22:22:59.935074",
+        "metadata": {}
+      },
+      {
+        "role": "user",
+        "content": "Who teaches Database Systems?",
+        "timestamp": "2026-05-28T22:23:37.429684",
+        "metadata": {}
+      },
+      {
+        "role": "assistant",
+        "content": "Database Systems is taught by Hassan Shahzad at Salim Habib University.",
+        "timestamp": "2026-05-28T22:23:38.975463",
+        "metadata": {}
+      }
+    ],
+    "department_routed": null,
+    "resolved": false,
+    "satisfaction_score": null,
+    "metadata": {}
   }
 }
