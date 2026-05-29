@@ -43,6 +43,7 @@ jobs:
       # ── Guard: require explicit confirmation ─────────────────────────────────
       - name: Confirm destroy intent
         shell: bash
+        working-directory: .
         run: |
           if [[ "${{ github.event.inputs.confirm }}" != "destroy" ]]; then
             echo "❌ Confirmation input was '${{ github.event.inputs.confirm }}' — expected 'destroy'."
